@@ -3,9 +3,9 @@
 int main ()
 {
     int n;
+    scanf("%d",&n);
     int nga = n-1;
     int sao = 1;
-    scanf("%d",&n);
     for (int i=1; i<2*n; i++)
     {
         for (int j=1; j<=abs(nga); j++)
@@ -16,5 +16,6 @@ int main ()
         if(i<n)
             sao=sao+2;
         else sao=sao-2;
+        printf("\n");
     }
 }
