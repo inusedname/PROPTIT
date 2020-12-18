@@ -13,7 +13,10 @@ int main()
     }
     if (n==sum)
     {
-         printf("Yes");
+        printf("Yes");
     }
-    else printf("No");
+    else 
+    {
+        printf("No");
+    }
 }

@@ -9,13 +9,18 @@ int main ()
     for (int i=1; i<2*n; i++)
     {
         for (int j=1; j<=abs(nga); j++)
-            printf("~");
+            {printf("~");}
         for (int q=1; q<=sao; q++)
-            printf("*");
+            {printf("*");}
         nga--;
         if(i<n)
+        {
             sao=sao+2;
-        else sao=sao-2;
+        }
+        else 
+        {
+            sao=sao-2;
+        }
         printf("\n");
     }
 }
