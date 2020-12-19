@@ -4,19 +4,17 @@ int main()
 {
     int n;
     scanf("%d", &n);
-    for (int i = 2; i <= n;i++)
+    int i = 2;
+    while (i<=sqrt(n))
     {
-        if (n==1)
-            break;
-        while (1)
+        if (n % i == 0)
         {
-            if (n%i==0)
-            {
-                printf("%d ", i);
-                n = n / i;
-            }
-            else
-                break;
+            printf("%d ", i);
+            n = n / i;
         }
+        else
+            {i++;}
     }
+    if (n>1)
+        printf("%d", n);
 }
