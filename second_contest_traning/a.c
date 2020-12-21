@@ -1,20 +1,18 @@
 #include<stdio.h>
-int max(int a,int b)
-{
-    if (a>b)
-        return a;
-    else
-        return b;
-}
+
 int main()
 {
     int a, b;
-    long long lcm, i;
     scanf("%d%d", &a, &b);
-    for (i = max(a,b); i <= a * b;i=i+i)
+    while (a>0)
     {
-        if (i%a==0&&i%b==0)
-            break;
+        if (a<b)
+        {
+            int tam = a;
+            a = b;
+            b = tam;
+        }
+        a = a % b;
     }
-    printf("%lld", (a*b)/i);
+    printf("%d", b);
 }
