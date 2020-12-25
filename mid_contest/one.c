@@ -11,6 +11,5 @@ int main()
         scanf("%d", &m);
         int A[m];
         int max = 0;
-        for ()
     }
 }
