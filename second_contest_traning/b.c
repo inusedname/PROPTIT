@@ -1,29 +1,26 @@
-#include<stdio.h>
+#include <stdio.h>
 #include <math.h>
 int main()
 {
     int n;
     int i = 2;
-    int dem = 0;
+    int count = 0;
     scanf("%d",&n);
-    while (n>1)
+    while(i<=sqrt(n))
     {
-        if (n%i==0) 
+        while (n%i==0)
         {
-            dem++;
+            count++;
             n = n / i;
         }
-        else 
-        {
-            if (dem!=0)
-            {
-                printf("%d^%d x ", i, dem);
-            }
-            dem = 0;
-            i++;
-        }
+        if (count)
+            if (n!=1)
+                printf("%d^%d x ", i, count);
+            else
+                printf("%d^%d", i, count);
+        i++;
+        count = 0;        
     }
-    if (n==1)
-        printf("%d^%d  ", i, dem);
-    printf("\b\b ");
+    if (n>1)
+        printf("%d^%d", n, count + 1);
 }
