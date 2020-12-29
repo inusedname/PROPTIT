@@ -1,30 +1,25 @@
 #include <stdio.h>
-
-int count(int a[10000],int n, int i)
-{
-    int j;
-    int dem = 0;
-    for (j = 0; j < n;j++)
-    {
-        if (a[j]==i)
-            dem++;
-    }
-    return dem;
-}
+#define MAX 1000000
+int a[100000];
+int freq[10000]={0};
 int main()
 {
     int n, i;
     scanf("%d", &n);
-    int a[100000];
-    for (i = 0; i < n;i++)
+    for (i = 0; i < n; i++)
     {
         scanf("%d", &a[i]);
+        freq[a[i]]++;
     }
-    int time = 0;
-    int number = 0;
-    int B[10] = {0};
-    for (i = 0; i < n;i++)
+    int ans = 0;
+    int loc = 0;
+    for (i = 0; i< MAX;i++)
     {
-        if ()
+        if (freq[i]>ans)
+        {
+            ans = freq[i];
+            loc = i;
+        }
     }
+    printf("%d %d", loc, ans);
 }
