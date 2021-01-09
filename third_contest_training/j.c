@@ -8,21 +8,15 @@ int main()
     {
         long long i, x, k, n, temp;
         scanf("%lld%lld%lld", &x, &k, &n);
-        if(!n)
-        {
-            printf("NO");
-            t--;
-            continue;
-        }
         for (i = 0; i < n;i++)
         {
             scanf("%lld", &temp);
             x = x + temp;
         }
         if (x>k)
-            printf("YES");
+            printf("YES\n");
         else
-            printf("NO");
+            printf("NO\n");
         t--;
     }
 }
