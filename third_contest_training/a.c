@@ -1,37 +1,37 @@
-#include <stdio.h>
+#include <stdio.h> //use GCC+17 9.2.0
 int main()
 {
-    int test;
-    scanf("%d", &test);
-    while (test>0)
+    int T;
+    scanf("%d",&T);
+    while (T)
     {
-        int a[100005];
         int n, i;
-        scanf("%d", &n);
-        int max, min=-1000000;
-        int flag = 0;
-        for (i = 0; i < n;i++)
+        scanf("%d",&n);
+        int check=n;
+        int temp, cons;
+        scanf("%d",&cons);
+        int fir=cons, sec=-99999;
+        for (i=1;i<n;i++)
         {
-            scanf("%d", &a[i]);
-            if (i==0)
-                max = a[0];
-            if (a[i]==max)
+            scanf("%d",&temp);
+            if (temp==cons) check--; //check=1 -> out
+            if (check==1)
             {
-                flag++;
-                continue;
+                printf ("0");
+                return 0;
             }
-            else if (a[i] > max)
+            if (temp>fir)
             {
-                min = max;
-                max = a[i];
+                sec = fir;
+                fir = temp;
             }
-            else if (a[i] > min)
-                min = a[i];
+            if (temp>sec&&temp!=fir)
+            {
+                sec = temp;
+            }
         }
-        if (flag!=n)
-        printf("%d %d\n", min, max);
-        else
-            printf("0\n");
-        test--;
+        printf ("%d %d",sec,fir);
+        T--;
+        printf ("\n");
     }
 }
