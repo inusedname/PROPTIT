@@ -1,42 +1,17 @@
 #include <stdio.h>
-int main(void) {
-    int a[1002];
-    int n, k;
-    int chiaHet = 0;
-    int temp;
-    int i, j = 0;
-    int khongChia = 0;
-    scanf("%d%d", &n, &k);
-    for (i = 0; i < n;i++)
-    {       
-        scanf("%d", &temp);
-        if (temp%k==0)
-            chiaHet++;
-        else 
-        {
-            khongChia += temp;
-            a[j] = temp;
-            j++;
-        }
-    }
-    int dem = j;
-    if (j)
+
+int main()
+{
+    int route;
+    scanf("%d", &route);
+    int min = 99999;
+    while (route)
     {
-        int Mod = khongChia % k;
-        if (Mod) 
-        {   
-            for (i = 0; i < j;i++)
-            {
-                if (a[i]%k==Mod)
-                {
-                    dem--;
-                    break;
-                }
-            }
-            if (dem==j)
-                dem = 0;
-        }
+        int a, b;
+        scanf("%d %d", &a, &b);
+        if (a+b<min)
+            min = a + b;
+        route--;
     }
-    printf("%d", chiaHet + dem);
-    return 0;
+    printf("%d", min);
 }
