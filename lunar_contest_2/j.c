@@ -15,9 +15,9 @@ int main()
     double xc = xa + w, yc = ya - h;
     double xd = xa, yd = ya - h;
     int bl = 1;
-    if(fabs(yi-y0)>r+(h/2)||fabs(xi-x0)>r+(w/2))
+    if(fabs(fabs(yi)-fabs(y0))>r+(h/2)||fabs(fabs(xi)-fabs(x0))>r+(w/2))
         bl = 0;
-    if (fabs(xi-x0)>w/2&&fabs(yi-y0)>h/2)
+    if (fabs(fabs(xi)-fabs(x0))>w/2&&fabs(fabs(yi)-fabs(y0))>h/2)
         if (kcach(x0,xa,y0,ya)>r||kcach(x0,xb,y0,yb)>r||kcach(x0,xc,y0,yc)>r||kcach(x0,xd,y0,yd)>r)
             bl = 0;
     if (bl)
