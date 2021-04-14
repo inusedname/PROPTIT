@@ -10,24 +10,25 @@ typedef double db;
 
 void solve()
 {
-    int n = 100;
-    n++;
-    int a[n];
-    a[0] = 0;
-    a[1] = 0;
-    for (int i = 2; i < n; i++)
-        a[i] = 1;
-    for (int i = 2; i * i <= n; i++)
+    string s;
+    cin >> s;
+    int dem = 1;
+    char tmp = s[0];
+    for (int i = 1; i < s.size(); i++)
     {
-        if (a[i])
+        if (s[i] == tmp)
         {
-            for (int j = i * i; j < n; j += i)
-                a[j] = 0;
+            dem++;
+        }
+        else
+        {
+            cout << dem << tmp;
+            tmp = s[i];
+            dem = 1;
         }
     }
-    for (int i = 2; i < n; i++)
-        if (a[i])
-            cout << i << " ";
+    cout << dem << tmp;
+    cout << endl;
 }
 
 int main()

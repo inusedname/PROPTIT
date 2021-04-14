@@ -4,5 +4,12 @@
         "iostream": "cpp",
         "cmath": "cpp",
         "iomanip": "cpp",
+        "BCTEST14.C": "cpp",
+        "*.tcc": "c",
+        "stdio.h": "c",
+        "array": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp"
     }
 }
