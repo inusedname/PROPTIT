@@ -7,42 +7,41 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 #define endl "\n";
+int n;
 
+int dem = 0;
 struct meet
 {
     int s;
     int f;
 };
+vector<meet> a(n);
 bool cmp(meet x, meet y)
 {
-    if (x.s == y.s)
-        return (x.f - x.s < y.f - y.s);
-    return (x.s < y.s);
+    return (x.f <= y.f);
+}
+
+void dequi()
+{
+    int x = a[0].s;
+    for (int i = 0; i < n; i++)
+    {
+        if (x <= a[i].s)
+        {
+            dem++;
+            x = a[i].f;
+        }
+    }
 }
 void solve()
 {
-    int n;
     cin >> n;
-    vector<meet> a(n);
+    a.resize(n);
     for (int i = 0; i < n; i++)
         cin >> a[i].s >> a[i].f;
     sort(a.begin(), a.end(), cmp);
-    int max = 1;
-    for (int i = 0; i < n; i++)
-    {
-        int tmp = 1;
-        for (int j = i + 1; j < n; j++)
-        {
-            if (a[i].f <= a[j].s)
-            {
-                tmp++;
-                a[i].f = a[j].f;
-            }
-        }
-        if (tmp > max)
-            max = tmp;
-    }
-    cout << max;
+    dequi();
+    cout << dem;
 }
 
 int main()
