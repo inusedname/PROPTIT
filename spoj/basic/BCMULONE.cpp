@@ -12,17 +12,24 @@ void solve()
 {
     int n;
     cin >> n;
-    for (int i = 1; i <= (n - 1) / 9; i++)
-        cout << "123456790";
-    int t = (n - 1) % 9;
-    for (int i = 1; i <= t; i++)
-        cout << (char)(48 + i);
-    if ((n - 1) / 9 == 0)
-        for (int i = t + 1; i >= 1; i--)
-            cout << (char)(48 + i);
-    for (int i = 1; i <= (n - 1) / 9; i++)
-        cout << "0987654321";
-    cout << endl;
+    string s = "", s1 = "1234567900", s2 = "098765432";
+    int n1 = (n - 1) / 9, n2 = n - 9 * n1;
+    for (int i = 1; i <= n2; i++)
+    {
+        s.insert(s.size(), 1, (char)(i + '0'));
+    }
+    for (int i = n2 - 1; i > 0; i--)
+    {
+        s.insert(s.size(), 1, (char)(i + '0'));
+    }
+    if (n > 9)
+    {
+        for (int i = 0; i < n1; i++)
+            s.insert(0, s1);
+        for (int i = 0; i < n1; i++)
+            s.insert(s.size() - 1, s2);
+    }
+    cout << s << endl;
 }
 
 int main()
