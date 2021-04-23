@@ -7,11 +7,23 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 #define endl "\n";
-void solve(int max)
+int sto[10001];
+
+void solve()
 {
+    int a, b;
+    cin >> a >> b;
+    for (int i = a; i <= b; i++)
+        if (sto[i])
+            cout << i << " ";
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     int n = 10000;
     n++;
-    int sto[10001];
     sto[0] = 0;
     sto[1] = 0;
     for (int i = 2; i < n; i++)
@@ -24,14 +36,11 @@ void solve(int max)
                 sto[j] = 0;
         }
     }
-}
-
-int main()
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
     int t;
     cin >> t;
     while (t--)
-        solve(10000);
+    {
+        solve();
+        cout << endl;
+    }
 }

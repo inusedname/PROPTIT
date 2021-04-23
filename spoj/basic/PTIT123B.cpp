@@ -8,42 +8,42 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 #define endl "\n";
-
-void solve(int step)
+int step = 1;
+int n;
+int ktralap(ll a[])
 {
-    int n;
+    for (int i = 0; i < n - 1; i++)
+    {
+        if (a[i] != a[i + 1])
+            return 1;
+    }
+    return 0;
+}
+
+void solve()
+{
     cin >> n;
     if (n == 0)
         exit(0);
     ll a[n];
-    int min = 99999;
-    int mmax = -99999;
     for (int i = 0; i < n; i++)
+        cin >> a[i];
+    if (ktralap(a) == 0)
     {
-        cin >> a[n];
-        if (a[i] < min)
-            min = a[i];
-        if (a[i] > mmax)
-            mmax = a[i];
+        printf("Case %d: 0 iterations\n", step);
+        return;
     }
     int dem = 0;
-    while (dem < 1000 && min < mmax)
+    while (dem < 1000)
     {
+        int tmp = abs(a[n - 1] - a[0]);
         for (int i = 0; i < n - 1; i++)
-        {
             a[i] = abs(a[i] - a[i + 1]);
-        }
-        a[n - 1] = a[n - 1] - a[0];
-        min = 0;
-        mmax = 0;
-        for (int i = 0; i < n; i++)
-        {
-            if (a[i] < min)
-                min = a[i];
-            if (a[i] > mmax)
-                mmax = a[i];
-        }
+        a[n - 1] = tmp;
+        // debug(a);
         dem++;
+        if (ktralap(a) == 0)
+            break;
     }
     if (dem < 1000)
         printf("Case %d: %d iterations\n", step, dem);
@@ -57,10 +57,9 @@ int main()
     cin.tie(0);
     // int t;
     // cin >> t;
-    int step = 1;
     while (1)
     {
-        solve(step);
+        solve();
         step++;
     }
 }

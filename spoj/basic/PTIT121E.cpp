@@ -2,90 +2,46 @@
 #include <cmath>
 #include <vector>
 #include <string>
-#include <cstring>
 #include <algorithm>
 using namespace std;
 typedef long long ll;
 typedef double db;
 #define endl "\n";
+int stack[10000];
 
-int mass(char a)
-{
-    if (a == 'C')
-        return 12;
-    if (a == 'H')
-        return 1;
-    if (a == 'O')
-        return 16;
-}
-int sumMass(string a)
-{
-    int subSum = 0;
-    for (int i = 0; i < a.size(); i++)
-        subSum += mass(a[i]);
-    return subSum;
-}
 void solve()
 {
-    string s;
+    string s; //CH(CO2H)3
     cin >> s;
-    for (int i = 0; i < s.size(); i++) // Loại bỏ dấu ngoạc dư thừa
+    int dem = 0;
+    for (int i = 0; i < s.size(); i++)
     {
-        if (s[i] == ')' && !isdigit(s[i + 1]))
+        if (s[i] == 'C')
+            stack[dem] = 12;
+        else if (s[i] == 'H')
+            stack[dem] = 1;
+        else if (s[i] == 'O')
+            stack[dem] = 16;
+        else if (s[i] == '(')
+            stack[dem] = 0;
+        else if (s[i] == ')')
         {
-            for (int j = i - 1; j >= 0; j--)
+            int sum = 0;
+            while (stack[--dem] > 0)
             {
-                if (s[j] == '(')
-                {
-                    s.erase(s.begin() + i);
-                    s.erase(s.begin() + j);
-                    i = i - 2;
-                    break;
-                }
+                sum += stack[dem];
             }
+            stack[dem] = sum;
         }
+        else
+            stack[dem-- - 1] *= (s[i] - '0');
+        dem++;
     }
-    for (int i = 0; i < s.size(); i++) //Phá ngoặc
-    {
-        if (s[i] == ')')
-        {
-            string s2;
-            int num = s[i + 1] - '0';
-            num--;
-            for (int j = i - 1; j >= 0; j--)
-            {
-                if (s[j] == '(')
-                {
-                    s2 = s.substr(j + 1, i - j - 1);
-                    s.erase(s.begin() + i + 1);
-                    s.erase(s.begin() + i);
-                    s.erase(s.begin() + j);
-                    i = i - 1;
-                    while (num > 0)
-                    {
-                        s.insert(i, s2);
-                        num--;
-                    }
-                    break;
-                }
-            }
-        }
-    }
-    for (int i = 0; i < s.size(); i++) //Duyệt các phân tử đa không có ngoặc
-    {
-        if (isdigit(s[i]))
-        {
-            string s2 = s.substr(i - 1, 1);
-            int a = s[i] - '0';
-            s.erase(s.begin() + i);
-            while (a > 1)
-            {
-                s.insert(i - 1, s2);
-                a--;
-            }
-        }
-    }
-    cout << sumMass(s);
+    dem--;
+    int k = 0;
+    while (dem >= 0)
+        k += stack[dem--];
+    cout << k;
 }
 
 int main()

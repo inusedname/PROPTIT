@@ -3,5 +3,6 @@ using namespace std;
 
 int main()
 {
-    cout << -1 % 1000000007;
+    int i = 1;
+    printf("%d", !i);
 }

@@ -2,18 +2,44 @@
 
 int main()
 {
-    int n; //5
-    scanf("%d", &n);
-    int a[n];                       // a[5]
-    for (int i = 0; i < n + 2; i++) //1 2 3 4 5 6
-        scanf("%d", &a[i]);
-    for (int i = 0; i < n; i++)
+    int x, y, z;
+    int m;
+    scanf("%d%d%d%d", &x, &y, &z, &m);
+    m *= 2;
+    int dem = 0;
+    for (int i = 1; i <= z; i++)
     {
-        printf("%d ", a[i]);
+        if (m < 3)
+            break;
+        m -= 3;
+        dem++;
+        if (m == 0)
+        {
+            printf("%d", dem);
+            return 0;
+        }
     }
+    for (int i = 1; i <= y; i++)
+    {
+        if (m < 2)
+            break;
+        m -= 2;
+        dem++;
+        if (m == 0)
+        {
+            printf("%d", dem);
+            return 0;
+        }
+    }
+    for (int i = 1; i <= x; i++)
+    {
+        m -= 1;
+        dem++;
+        if (m == 0)
+        {
+            printf("%d", dem);
+            return 0;
+        }
+    }
+    printf("KHONG DOI DUOC");
 }
-//a[n]
-//a[0] -> a[n-1]=a[4]
-// C++ nó sẽ dư ra 2 phần tử thừa ở cuối
-// n=5 a[5] a[0]->a[4]
-// a[5] a[6] ->
