@@ -1,45 +1,24 @@
 #include <stdio.h>
-
+#include <math.h>
 int main()
 {
-    int x, y, z;
-    int m;
-    scanf("%d%d%d%d", &x, &y, &z, &m);
-    m *= 2;
-    int dem = 0;
-    for (int i = 1; i <= z; i++)
+    int t;
+    scanf("%d", &t);
+    while (t--)
     {
-        if (m < 3)
-            break;
-        m -= 3;
-        dem++;
-        if (m == 0)
+        long long a, b, n;
+        scanf("%lld%lld%lld", &a, &b, &n);
+        if (n % a == b)
+            printf("%lld", n);
+        // số phải có dạng : b+ka với k=0,1,2...
+        // b + ka <= n
+        // ka <= n - b
+        // k <= (n - b) / a
+        else
         {
-            printf("%d", dem);
-            return 0;
+            int index = floor((n - b) / a);
+            printf("%lld", b + index * a);
         }
+        printf("\n");
     }
-    for (int i = 1; i <= y; i++)
-    {
-        if (m < 2)
-            break;
-        m -= 2;
-        dem++;
-        if (m == 0)
-        {
-            printf("%d", dem);
-            return 0;
-        }
-    }
-    for (int i = 1; i <= x; i++)
-    {
-        m -= 1;
-        dem++;
-        if (m == 0)
-        {
-            printf("%d", dem);
-            return 0;
-        }
-    }
-    printf("KHONG DOI DUOC");
 }

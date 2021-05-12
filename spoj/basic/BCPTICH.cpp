@@ -7,22 +7,23 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 #define endl "\n";
-int sto[10001];
-void solve(int max)
+int tmp;
+ll n;
+void solve()
 {
-    int n = 10001;
-    sto[0] = 0;
-    sto[1] = 0;
-    for (int i = 2; i < n; i++)
-        sto[i] = 1;
-    for (int i = 2; i * i <= n; i++)
+    cin >> tmp;
+    cout << tmp << " ";
+    cin >> n;
+    int dem = 0;
+    for (ll i = 2; i <= sqrt(2 * n); i++)
     {
-        if (sto[i])
+        if ((2 * n) % i == 0)
         {
-            for (int j = i * i; j < n; j += i)
-                sto[j] = 0;
+            if (((i + 1) - (2 * n) / i) % 2 == 0)
+                dem++;
         }
     }
+    cout << dem;
 }
 
 int main()
@@ -32,5 +33,8 @@ int main()
     int t;
     cin >> t;
     while (t--)
-        solve(10000);
+    {
+        solve();
+        cout << endl;
+    }
 }
