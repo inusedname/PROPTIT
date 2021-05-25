@@ -1,49 +1,32 @@
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <string>
-#include <algorithm>
-using namespace std;
-typedef long long ll;
-typedef double db;
-#define endl "\n";
+#include <stdio.h>
+#include <conio.h>
 
-void solve()
+struct DIEM
 {
-    int n, k;
-    cin >> n;
-    vector<string> a(n);
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
-    sort(a.begin(), a.end());
-    for (int k = 1; k < 21; k++)
+    int hd;
+    int td;
+};
+struct DIEM xy[2];
+
+void nhap(DIEM xy[])
+{
+    for (int i = 0; i < 2; i++)
     {
-        int u = sqrt(k * 2);
-        if (u * (u + 1) == k * 2)
-            cout << a[u - 1][0];
-        else if (u * (u + 1) > k * 2)
-        {
-            int t = (u * (u + 1) - k * 2) / 2;
-            cout << a[u - t - 1][0];
-        }
-        else if (u * (u + 1) < k * 2)
-        {
-            u++;
-            int t = (u * (u + 1) - k * 2) / 2;
-            cout << a[u - t - 1][0];
-        }
+        printf("Nhap hoanh do va tung do cua diem %d: ", i);
+        scanf("%d", &xy[i].hd);
+        scanf("%d", &xy[i].td);
     }
 }
-
-int main()
+void xuat(DIEM xy[])
 {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    // int t;
-    // cin >> t;
-    // while (t--)
+    for (int i = 0; i < 2; i++)
     {
-        solve();
-        cout << endl;
+        printf("Toa do diem thu %d la (%d; %d)", i, xy[i].hd, xy[i].td);
     }
+}
+main()
+{
+    int i;
+    nhap(xy);
+    xuat(xy);
 }
