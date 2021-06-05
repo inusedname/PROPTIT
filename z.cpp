@@ -1,32 +1,64 @@
-#include <stdio.h>
-#include <conio.h>
+#include <bits/stdc++.h>
+#define ll long long
 
-struct DIEM
+using namespace std;
+const int oo = 1e9 + 7;
+const int n = 2;
+struct matrix
 {
-    int hd;
-    int td;
+    ll a[3][3];
+    matrix()
+    {
+        a[0][0] = 0;
+        a[0][1] = 1;
+        a[1][0] = 1;
+        a[1][1] = 1;
+    }
 };
-struct DIEM xy[2];
+matrix mulMatrix(matrix A, matrix B)
+{
+    matrix tg;
+    tg.a[0][0] = A.a[0][0] * B.a[0][0] + A.a[0][1] * B.a[1][0];
+    tg.a[0][1] = A.a[0][0] * B.a[0][1] + A.a[0][1] * B.a[1][1];
+    tg.a[1][0] = A.a[1][0] * B.a[0][0] + A.a[1][1] * B.a[1][0];
+    tg.a[1][1] = A.a[1][0] * B.a[0][1] + A.a[1][1] * B.a[1][1];
+    tg.a[0][0] %= oo;
+    tg.a[0][1] %= oo;
+    tg.a[1][0] %= oo;
+    tg.a[1][1] %= oo;
+    return tg;
+}
 
-void nhap(DIEM xy[])
+matrix powMatrix(matrix a, ll p)
 {
-    for (int i = 0; i < 2; i++)
-    {
-        printf("Nhap hoanh do va tung do cua diem %d: ", i);
-        scanf("%d", &xy[i].hd);
-        scanf("%d", &xy[i].td);
-    }
+    if (p == 1)
+        return a;
+    matrix tg = powMatrix(a, p / 2);
+    if (p % 2 == 0)
+        return mulMatrix(tg, tg);
+    else
+        return mulMatrix(mulMatrix(tg, tg), a);
 }
-void xuat(DIEM xy[])
+
+void solve()
 {
-    for (int i = 0; i < 2; i++)
+    ll n;
+    cin >> n;
+    if (n == 0)
     {
-        printf("Toa do diem thu %d la (%d; %d)", i, xy[i].hd, xy[i].td);
+        cout << 0 << endl;
+        return;
     }
+    matrix tg;
+    matrix A = powMatrix(tg, n);
+    cout << A.a[0][1] << endl;
 }
-main()
+
+int main()
 {
-    int i;
-    nhap(xy);
-    xuat(xy);
+    int t = 1;
+    //cin >> t;
+    while (t--)
+        solve();
+    return 0;
 }
