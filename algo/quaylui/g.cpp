@@ -7,33 +7,29 @@ using namespace std;
 typedef long long ll;
 typedef double db;
 #define endl "\n"
-int n, k;
-int flag;
-void Search(int begin, int end, vector<int> a)
+int n, s, res;
+int a[31];
+void Try(int dem, int sum, int vt)
 {
-    if (begin == end)
-    {
-        if (a[begin] == k && !flag)
-        {
-            cout << begin + 1;
-            flag = 1;
-        }
+    if (dem >= res || sum > s)
         return;
-    }
-    int mid = (begin + end) / 2;
-    Search(begin, mid, a);
-    Search(mid + 1, end, a);
+    if (sum == s && res > dem)
+        res = dem;
+    for (int i = vt; i < n; i++)
+        Try(dem + 1, sum + a[i], i + 1);
 }
 void solve()
 {
-    flag = 0;
-    cin >> n >> k;
-    vector<int> a(n);
+    res = INT_MAX;
+    cin >> n >> s;
     for (int i = 0; i < n; i++)
         cin >> a[i];
-    Search(0, n - 1, a);
-    if (!flag)
-        cout << "NO";
+    sort(a, a + n, greater<int>());
+    Try(0, 0, 0);
+    if (res == INT_MAX)
+        cout << -1;
+    else
+        cout << res;
 }
 
 int main()

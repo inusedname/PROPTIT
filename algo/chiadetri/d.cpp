@@ -9,10 +9,9 @@ typedef double db;
 #define endl "\n"
 ll POW(int n)
 {
-    ll pp = 1;
-    for (int i = 0; i < n; i++)
-        pp *= 2;
-    return pp;
+    if (n == 1)
+        return;
+    
 }
 void solve()
 {
