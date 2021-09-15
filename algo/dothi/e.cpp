@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#define ll long long
+#define endl "\n"
+using namespace std;
+
+int const MAX = 1e6 + 6;
+vector<int> ke[MAX];
+vector<bool> chuaxet;
+int n, m;
+int demTP;
+void nhap()
+{
+    cin >> n >> m;
+    for (int i = 1; i <= m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        ke[u].push_back(v);
+        ke[v].push_back(u);
+    }
+    chuaxet.assign(n + 1, 1);
+}
+void dfsLT(int u)
+{
+    chuaxet[u] = 0;
+    demTP++;
+    for (auto &&v : ke[u])
+    {
+        if (chuaxet[v])
+            dfsLT(v);
+    }
+}
+int main()
+{
+    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+    nhap();
+    int maxLT = 0;
+    for (int u = 1; u <= n; u++)
+    {
+        if (chuaxet[u])
+        {
+            demTP = 0;
+            dfsLT(u);
+            maxLT = max(maxLT, demTP);
+        }
+    }
+    cout << maxLT;
+}

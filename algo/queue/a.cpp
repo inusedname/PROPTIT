@@ -9,7 +9,7 @@ using namespace std;
 struct mem
 {
     char al;
-    int f;
+    ll f;
 };
 
 struct cmp
@@ -31,7 +31,7 @@ int main()
         s.erase();
         cin >> k >> s;
         sort(s.begin(), s.end());
-        tmp = {s[0], 1};
+        tmp.al = s[0], tmp.f = 1;
         for (int i = 1; i < s.size(); i++)
         {
             if (s[i] == tmp.al)
@@ -44,12 +44,10 @@ int main()
             }
         }
         qu.push(tmp);
-        while (k--)
+        while (qu.top().f != 0 && k)
         {
             tmp = qu.top();
-            tmp.f--;
             qu.pop();
-            qu.push(tmp);
         }
         ll sum = 0;
         while (!qu.empty())
