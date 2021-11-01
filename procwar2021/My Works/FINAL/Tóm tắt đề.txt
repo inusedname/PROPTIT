@@ -1,0 +1,14 @@
+- Kĩ thuật sử dụng: Duyệt đồ thị có hướng
+<---------------------------------------->
+- Ý tưởng: em chợt nghĩ ra về một mạng lưới giống phả hệ trong sinh học. tạo xong đồ thị đó thì em sẽ nghĩ xem là nên đặt câu hỏi gì. Cuối cùng thì em thấy nêu mối quan hệ là hợp lí vì đề bài sẽ đơn giản hết mức có thể, các bạn cũng không cần mất quá nhiều thời gian để nghĩ ra hướng làm.
+<---------------------------------------->
+- Khó khăn: 
+
++ Lúc đầu thì em để là đồ thị vô hướng -> tới lúc sinh test mới nảy sinh vấn đề không biết được ai là bố ai là con -> quyết định để lại là đồ thị có hướng, danh sách kề nhập vào có thứ tự.
+
++ Lúc sinh test: bị các bạn doạ là sinh test cho đồ thị khó lắm nên em cũng sợ, cộng với cả lúc sinh test cho đồ thị thì em thấy nó khó thật. Nếu em cho trước n, m thì bài toán rất khó để hoàn thiện nhưng sau đấy em thấy nên để n, m phát triển cùng với phả hệ thì sẽ hợp lí hơn. 
+
++ solve thì em thấy khá là đơn giản, không quá cầu kì, chỉ cần người giải cover được hết các trường hợp thì coi như là đã AC.
+<---------------------------------------->
+- Giải pháp:
++ Các vấn đề vướng mắc anh Duy Dũng đã giúp em nên em đã hoàn thành tốt việc sinh test.

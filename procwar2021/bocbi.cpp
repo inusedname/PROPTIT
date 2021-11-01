@@ -6,25 +6,26 @@
 #define endl "\n"
 const int oo = 1e9 + 7;
 using namespace std;
-int n;
-ll res = 0;
-bool a[60];
-void dequi(int step)
-{
 
-    for (int i = 1; i >= 0; i--)
-    {
-        a[i] = i;
-        
-    }
-}
 void solve()
 {
-    cin >> n;
-    for (int i = 0; i <= 60; i++)
-        a[i] = 0;
-    dequi(1);
-    cout << res;
+    vector<ll> a(3);
+    for (int i = 0; i < 3; i++)
+        cin >> a[i];
+    sort(a.begin(), a.end());
+    ll u = min(a[1], a[2] - a[0]);
+    a[1] -= u;
+    a[2] -= u;
+    ll round = u;
+    //process b to 0
+    if (a[1] % 2)
+        a[1]--;
+    round += a[1];
+    u = a[1] / 2;
+    a[0] -= u, a[2] -= u;
+    //end
+    round += min(a[0], a[2]);
+    cout << round;
 }
 
 int main()

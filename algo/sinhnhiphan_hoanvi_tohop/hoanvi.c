@@ -33,7 +33,6 @@ int main()
         }
         if (i == 0)
             break;
-        min = hv[i];
         for (int j = n; j > i; j--)
             if (hv[j] > hv[i])
             {

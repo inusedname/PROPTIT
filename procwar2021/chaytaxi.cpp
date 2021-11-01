@@ -6,25 +6,28 @@
 #define endl "\n"
 const int oo = 1e9 + 7;
 using namespace std;
-int n;
-ll res = 0;
-bool a[60];
-void dequi(int step)
-{
 
-    for (int i = 1; i >= 0; i--)
-    {
-        a[i] = i;
-        
-    }
-}
 void solve()
 {
+    int n, tmp;
     cin >> n;
-    for (int i = 0; i <= 60; i++)
-        a[i] = 0;
-    dequi(1);
-    cout << res;
+    priority_queue<int, vector<int>, greater<int>> pq;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> tmp;
+        pq.push(tmp);
+    }
+    int total = 0;
+    while (pq.size() >= 2)
+    {
+        int x = pq.top();
+        pq.pop();
+        int y = pq.top();
+        pq.pop();
+        total += x + y;
+        pq.push(x + y);
+    }
+    cout << (20000 * (n - 1)) - total;
 }
 
 int main()

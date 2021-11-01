@@ -21,7 +21,6 @@ int main()
         i = 1;
         while (i <= k && th[i] == i)
             i++;
-        while ()
         if (i > k)
             break;
         th[i]--;
