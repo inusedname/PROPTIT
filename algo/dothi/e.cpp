@@ -9,18 +9,6 @@ vector<int> ke[MAX];
 vector<bool> chuaxet;
 int n, m;
 int demTP;
-void nhap()
-{
-    cin >> n >> m;
-    for (int i = 1; i <= m; i++)
-    {
-        int u, v;
-        cin >> u >> v;
-        ke[u].push_back(v);
-        ke[v].push_back(u);
-    }
-    chuaxet.assign(n + 1, 1);
-}
 void dfsLT(int u)
 {
     chuaxet[u] = 0;
@@ -31,10 +19,23 @@ void dfsLT(int u)
             dfsLT(v);
     }
 }
-int main()
+void solve()
 {
-    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
-    nhap();
+    for (int i = 0; i < MAX; i++)
+    {
+        ke[i].clear();
+    }
+    chuaxet.clear();
+    demTP = 0;
+    cin >> n >> m;
+    for (int i = 1; i <= m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        ke[u].push_back(v);
+        ke[v].push_back(u);
+    }
+    chuaxet.assign(n + 1, 1);
     int maxLT = 0;
     for (int u = 1; u <= n; u++)
     {
@@ -46,4 +47,15 @@ int main()
         }
     }
     cout << maxLT;
+}
+int main()
+{
+    ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        solve();
+        cout << endl;
+    }
 }

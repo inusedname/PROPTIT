@@ -1,41 +1,32 @@
-#include <bits/stdc++.h>
-#define ll long long
-#define arraycin(n)             \
-    for (int i = 0; i < n; i++) \
-        cin >> a[i];
-#define endl "\n"
-const int oo = 1e9 + 7;
-using namespace std;
-int n;
-ll res = 0;
-bool a[60];
-void dequi(int step)
+class myClass
 {
+public:
+    int x;
 
-    for (int i = 1; i >= 0; i--)
-    {
-        a[i] = i;
-        
-    }
-}
-void solve()
+public:
+    void setX();
+};
+
+void myClass::setX()
 {
-    cin >> n;
-    for (int i = 0; i <= 60; i++)
-        a[i] = 0;
-    dequi(1);
-    cout << res;
+    x = 3;
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0), cout.tie(0);
-    int t = 1;
-    cin >> t;
-    while (t--)
-    {
-        solve();
-        cout << endl;
-    }
+    myClass a;
+    //1. Cài đặt một con trỏ:
+    myClass *p;
+    p = &a;
+    //hoặc
+    myClass *p = new myClass;
+
+    //2. Truy cập vào member của đỐi tượng
+    cout << a.x;
+    cout << p->x;
+
+    // truy cập tới thành phần của một đối tượng thông qua con trỏ:
+    int myClass::*pMem;
+    pMem = &myClass::x;
+    cout << pMem;
 }
