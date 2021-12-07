@@ -1,4 +1,1 @@
-apple
-banana
-orange
-grapes
+monday
