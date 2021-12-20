@@ -7,3 +7,4 @@ settings.json
 tasks.json
 *.prob
 *.o
+*.cph

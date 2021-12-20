@@ -9,10 +9,10 @@ using namespace std;
 
 void solve()
 {
-    vector<ll> a(3);
+    long long a[3];
     for (int i = 0; i < 3; i++)
         cin >> a[i];
-    sort(a.begin(), a.end());
+    sort(a, a + 3);
     ll u = min(a[1], a[2] - a[0]);
     a[1] -= u;
     a[2] -= u;
