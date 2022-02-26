@@ -1,0 +1,1 @@
+{"name":"Local: a","url":"d:\\Code\\PROPTIT\\algo\\end\\a.cpp","tests":[{"id":1633262589598,"input":"10 3\n8 8 9 2 11 7 9 13 8 11\n9 15\n2 10\n15 20","output":"5\n7\n0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Code\\PROPTIT\\algo\\end\\a.cpp","group":"local","local":true}

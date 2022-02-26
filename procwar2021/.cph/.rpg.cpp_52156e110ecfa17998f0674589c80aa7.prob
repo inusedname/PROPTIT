@@ -1,0 +1,1 @@
+{"name":"Local: rpg","url":"d:\\Code\\PROPTIT\\procwar2021\\rpg.cpp","tests":[{"id":1634980847664,"input":"2\nBBBGGB\nBBGG","output":""},{"id":1634980853359,"input":"2\nB\nBGBGBG","output":""},{"id":1634981147835,"input":"1\nBBB","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Code\\PROPTIT\\procwar2021\\rpg.cpp","group":"local","local":true}

@@ -1,0 +1,1 @@
+{"name":"Local: solve","url":"d:\\Code\\PROPTIT\\procwar2021\\FINAL\\solve.cpp","tests":[{"id":1634529332208,"input":"3 2\n1 2\n2 3\n2\n1 2\n1 3","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Code\\PROPTIT\\procwar2021\\FINAL\\solve.cpp","group":"local","local":true}
