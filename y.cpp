@@ -1,27 +1,14 @@
 #include <iostream>
-#include <vector>
-#include <string>
-#include <cmath>
-#include <ctype.h>
-#define ll long long
 #define endl "\n"
-const int oo = 1e9 + 7;
 using namespace std;
-
-void solve()
-{
-    cout << 1;
-}
-
 int main()
 {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0), cout.tie(0);
-    int t = 1;
-    // cin >> t;
-    while (t--)
-    {
-        solve();
-        cout << endl;
-    }
+    // tính tổng từ 1 + 2 + 3 + 4 + 5 +...+ n
+    int n;
+    printf("Vui long nhap vao so n: "); // In ra
+    scanf("%d", &n);                    // Nhập vào n
+    int sum = 0;
+    for (int i = 1; i <= n; i++)
+        sum = sum + i;
+    printf("%d", sum);
 }
