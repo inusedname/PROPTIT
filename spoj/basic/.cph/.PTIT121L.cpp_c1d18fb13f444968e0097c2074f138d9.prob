@@ -1,1 +1,0 @@
-{"name":"Local: PTIT121L","url":"d:\\Code\\PROPTIT\\spoj\\basic\\PTIT121L.cpp","tests":[{"id":1638613121735,"input":"1 6\n6 2\n3 6","output":"6"},{"id":1638613132020,"input":"1 6\n6 2\n2 4","output":"0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Code\\PROPTIT\\spoj\\basic\\PTIT121L.cpp","group":"local","local":true}
