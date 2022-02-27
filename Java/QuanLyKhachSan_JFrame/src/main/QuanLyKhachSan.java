@@ -1,8 +1,8 @@
-package javapackages;
+package main;
 
 import Controller.Applications;
 
-public class JavaPackages {
+public class QuanLyKhachSan {
 
     public static void main(String[] args) {
         Applications app = new Applications();
