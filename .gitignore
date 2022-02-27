@@ -1,5 +1,5 @@
 # Editor configs
-\.vscode
+.vscode/
 
 # Temporary files
 tempCodeRunnerFile.cpp
@@ -7,10 +7,10 @@ z.c
 z.cpp
 
 # Other Folders
-\.cph
+.cph/
 
 # Object - Build Files
-\build
+build/
 *.o
 
 # Execution Files
