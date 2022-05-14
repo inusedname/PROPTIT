@@ -12,5 +12,5 @@ import javax.swing.table.DefaultTableModel;
  * @author inusedname
  */
 public interface View {
-    <T> void showAsTable(List<T> list, DefaultTableModel model);
+
 }

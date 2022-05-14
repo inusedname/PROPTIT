@@ -5,9 +5,9 @@ import java.time.LocalDate;
 
 public class HoaDon implements Serializable {
 
-    private int idKhach;
-    private int idPhong;
-    private LocalDate ngayThue;
+    private final int idKhach;
+    private final int idPhong;
+    private final LocalDate ngayThue;
 
     public HoaDon(int idKhach, int idPhong, LocalDate ngayThue) {
         this.idKhach = idKhach;

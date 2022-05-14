@@ -4,6 +4,7 @@
  */
 package View;
 
+import Controller.RoomController;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
@@ -11,18 +12,20 @@ import javax.swing.JOptionPane;
  *
  * @author inusedname
  */
-public class AddPhong extends javax.swing.JDialog {
+public final class EditPhong extends javax.swing.JDialog {
 
     /**
      * Creates new form AddPhong
      */
     private HomeFrm home;
 
-    public AddPhong(java.awt.Frame parent, boolean modal) {
+    public EditPhong(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         home = (HomeFrm) parent;
         initComponents();
         this.setLocationRelativeTo(null);
+        newRoomNameTF.setText(home.roomController.getRoomName(home.currentChoose));
+        newRoomTypeCB.setSelectedItem(home.roomController.getRoomType(home.currentChoose));
     }
 
     /**
@@ -38,7 +41,7 @@ public class AddPhong extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         newRoomNameTF = new javax.swing.JTextField();
         newRoomTypeCB = new javax.swing.JComboBox<>();
-        creatRoomButton = new javax.swing.JButton();
+        editRoomButton = new javax.swing.JButton();
         exitNewRoomButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
@@ -61,10 +64,10 @@ public class AddPhong extends javax.swing.JDialog {
             }
         });
 
-        creatRoomButton.setText("Create");
-        creatRoomButton.addActionListener(new java.awt.event.ActionListener() {
+        editRoomButton.setText("Edit");
+        editRoomButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                creatRoomButtonActionPerformed(evt);
+                editRoomButtonActionPerformed(evt);
             }
         });
 
@@ -77,7 +80,7 @@ public class AddPhong extends javax.swing.JDialog {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("THÊM PHÒNG");
+        jLabel3.setText("SỬA PHÒNG");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,7 +93,7 @@ public class AddPhong extends javax.swing.JDialog {
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(81, 81, 81)
-                        .addComponent(creatRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(editRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(65, 65, 65)
                         .addComponent(exitNewRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -123,7 +126,7 @@ public class AddPhong extends javax.swing.JDialog {
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(exitNewRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(creatRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(editRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(51, 51, 51))
         );
 
@@ -134,17 +137,17 @@ public class AddPhong extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_newRoomNameTFActionPerformed
 
-    private void creatRoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creatRoomButtonActionPerformed
+    private void editRoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editRoomButtonActionPerformed
         // TODO add your handling code here:
         String name = newRoomNameTF.getText();
         String type = newRoomTypeCB.getSelectedItem().toString();
-        String result = home.roomController.addNewRoom(name, type);
+        String result = home.roomController.editRoom(home.currentChoose, name, type);
         JOptionPane.showMessageDialog(rootPane, result);
-        if (result.equals("Thêm mới thành công")) {
+        if (result.equals("Sửa thành công")) {
             home.refreshRoomTable();
             this.dispose();
         }
-    }//GEN-LAST:event_creatRoomButtonActionPerformed
+    }//GEN-LAST:event_editRoomButtonActionPerformed
 
     private void newRoomTypeCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newRoomTypeCBActionPerformed
         // TODO add your handling code here:
@@ -172,20 +175,21 @@ public class AddPhong extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditPhong.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AddPhong dialog = new AddPhong(new javax.swing.JFrame(), true);
+                EditPhong dialog = new EditPhong(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -198,7 +202,7 @@ public class AddPhong extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton creatRoomButton;
+    private javax.swing.JButton editRoomButton;
     private javax.swing.JButton exitNewRoomButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

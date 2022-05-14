@@ -1,11 +1,11 @@
 package main;
 
-import Controller.Applications;
+import View.HomeFrm;
 
 public class QuanLyKhachSan {
 
     public static void main(String[] args) {
-        Applications app = new Applications();
-        app.run();
+        HomeFrm application;
+        application = new HomeFrm();
     }
 }

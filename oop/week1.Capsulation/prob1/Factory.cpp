@@ -1,5 +1,5 @@
 #include "Factory.h"
-#include <algorithm>
+#include <algorithm> // sort
 void Factory::addNewWorker()
 {
     int n;
@@ -10,7 +10,7 @@ void Factory::addNewWorker()
     {
         cout << "Cong nhan thu " << i + 1 << ":\n";
         newWorker.addNew();
-        worker.push_back(newWorker);
+        worker.push_back(newWorker); // add
     }
 }
 long long Factory::sumWorkerSalary()

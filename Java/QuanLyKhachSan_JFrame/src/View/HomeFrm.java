@@ -4,40 +4,59 @@
  */
 package View;
 
-import Controller.Util.IOFile;
+import Controller.RoomController;
 import Model.Phong;
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author inusedname
  */
-public class HomeFrm extends javax.swing.JFrame implements View {
+public final class HomeFrm extends javax.swing.JFrame {
 
     /**
      * Creates new form Home
      */
-    private List<Phong> listRooms;
     private DefaultTableModel modelRoom;
+
+    public RoomController roomController;
+    //public CustomerController customerController;
+    //public InvoiceController invoiceController;
+
+    public int currentChoose;
 
     public HomeFrm() {
         initComponents();
         this.setLocationRelativeTo(null);
-        listRooms = new ArrayList<>();
-        modelRoom = (DefaultTableModel) roomManagement.getModel();
-        listRooms = IOFile.loadFromFile("PHONG.txt");
-        this.showAsTable(listRooms, modelRoom);
-        if (!listRooms.isEmpty()) {
-            Phong.idPhongCount = listRooms.get(listRooms.size() - 1).getId() + 1;
+
+        roomController = new RoomController();
+        //customerController = new CustomerController();
+        //invoiceController = new InvoiceController();
+
+        modelRoom = (DefaultTableModel) roomsTable.getModel();
+        //modelCustomer = (DefaultTableModel) customerTable.getModel();
+        //modelInvoice = (DefaultTableModel) invoiceTable.getModel();
+
+        refreshRoomTable();
+        //refreshCustomerTable();
+        //refreshInvoiceTable();
+    }
+
+    public void refreshRoomTable() {
+        modelRoom.setRowCount(0);
+        for (Phong t : roomController.getRoomList()) {
+            modelRoom.addRow(new Object[]{
+                t.getId(), t.getName(), t.getLoaiphong(), t.available});
         }
     }
 
-    public void addPhong(Phong tmp) {
-        listRooms.add(tmp);
-        this.showAsTable(listRooms, modelRoom);
-        IOFile.saveToFile("PHONG.txt", listRooms);
+    public void refreshCustomerTable() {
+
+    }
+
+    public void refreshInvoiceTable() {
+
     }
 
     /**
@@ -49,72 +68,112 @@ public class HomeFrm extends javax.swing.JFrame implements View {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        invoiceTabName = new javax.swing.JTabbedPane();
+        roomPanel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        roomManagement = new javax.swing.JTable();
-        newRoomButtonFromHome = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        roomsTable = new javax.swing.JTable();
+        home_newRoomButton = new javax.swing.JButton();
+        home_editRoomButton = new javax.swing.JButton();
+        home_removeRoomButton = new javax.swing.JButton();
+        customerPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        customersManagement = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
+        customerTable = new javax.swing.JTable();
+        invoicePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        InvoiceManagement = new javax.swing.JTable();
+        invoiceTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        roomManagement.setModel(new javax.swing.table.DefaultTableModel(
+        roomsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mã Phòng", "Tên Phòng", "Loại Phòng"
+                "Mã Phòng", "Tên Phòng", "Loại Phòng", "Có sẵn"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(roomManagement);
+        roomsTable.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                roomsTableFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                roomsTableFocusLost(evt);
+            }
+        });
+        jScrollPane3.setViewportView(roomsTable);
 
-        newRoomButtonFromHome.setText("Thêm Phòng");
-        newRoomButtonFromHome.addActionListener(new java.awt.event.ActionListener() {
+        home_newRoomButton.setText("Thêm Phòng");
+        home_newRoomButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newRoomButtonFromHomeActionPerformed(evt);
+                home_newRoomButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        home_editRoomButton.setText("Sửa Phòng");
+        home_editRoomButton.setEnabled(false);
+        home_editRoomButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                home_editRoomButtonActionPerformed(evt);
+            }
+        });
+
+        home_removeRoomButton.setText("Xoá Phòng");
+        home_removeRoomButton.setEnabled(false);
+        home_removeRoomButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                home_removeRoomButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout roomPanelLayout = new javax.swing.GroupLayout(roomPanel);
+        roomPanel.setLayout(roomPanelLayout);
+        roomPanelLayout.setHorizontalGroup(
+            roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roomPanelLayout.createSequentialGroup()
+                .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(roomPanelLayout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 922, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(449, 449, 449)
-                        .addComponent(newRoomButtonFromHome, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(roomPanelLayout.createSequentialGroup()
+                        .addGap(250, 250, 250)
+                        .addComponent(home_newRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(120, 120, 120)
+                        .addComponent(home_editRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(106, 106, 106)
+                        .addComponent(home_removeRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        roomPanelLayout.setVerticalGroup(
+            roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(roomPanelLayout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(newRoomButtonFromHome, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
+                .addGroup(roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(home_newRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(home_editRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(home_removeRoomButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("QL Phong", jPanel1);
+        invoiceTabName.addTab("QL Phòng", roomPanel);
 
-        customersManagement.setModel(new javax.swing.table.DefaultTableModel(
+        customerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -130,28 +189,28 @@ public class HomeFrm extends javax.swing.JFrame implements View {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(customersManagement);
+        jScrollPane2.setViewportView(customerTable);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout customerPanelLayout = new javax.swing.GroupLayout(customerPanel);
+        customerPanel.setLayout(customerPanelLayout);
+        customerPanelLayout.setHorizontalGroup(
+            customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(customerPanelLayout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 932, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(42, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        customerPanelLayout.setVerticalGroup(
+            customerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(customerPanelLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(181, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("QL Khach Hang", jPanel2);
+        invoiceTabName.addTab("QL Khách Hàng", customerPanel);
 
-        InvoiceManagement.setModel(new javax.swing.table.DefaultTableModel(
+        invoiceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -167,49 +226,72 @@ public class HomeFrm extends javax.swing.JFrame implements View {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(InvoiceManagement);
+        jScrollPane1.setViewportView(invoiceTable);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout invoicePanelLayout = new javax.swing.GroupLayout(invoicePanel);
+        invoicePanel.setLayout(invoicePanelLayout);
+        invoicePanelLayout.setHorizontalGroup(
+            invoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(invoicePanelLayout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 922, Short.MAX_VALUE)
                 .addGap(45, 45, 45))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        invoicePanelLayout.setVerticalGroup(
+            invoicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(invoicePanelLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(164, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("QL Hoa Don", jPanel3);
+        invoiceTabName.addTab("QL Hoá Đơn", invoicePanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(invoiceTabName)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(invoiceTabName)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void newRoomButtonFromHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newRoomButtonFromHomeActionPerformed
+    private void home_newRoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_newRoomButtonActionPerformed
         // TODO add your handling code here:
         new AddPhong(this, rootPaneCheckingEnabled).setVisible(true);
-    }//GEN-LAST:event_newRoomButtonFromHomeActionPerformed
+    }//GEN-LAST:event_home_newRoomButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void home_editRoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_editRoomButtonActionPerformed
+        // TODO add your handling code here:
+        currentChoose = roomsTable.getSelectedRow();
+        new EditPhong(this, rootPaneCheckingEnabled).setVisible(true);
+    }//GEN-LAST:event_home_editRoomButtonActionPerformed
+
+    private void home_removeRoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_removeRoomButtonActionPerformed
+        // TODO add your handling code here:
+        currentChoose = roomsTable.getSelectedRow();
+        int result = JOptionPane.showConfirmDialog(this, "Xác nhận xoá", "Xoá", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            roomController.removeRoom(currentChoose);
+        }
+        refreshRoomTable();
+    }//GEN-LAST:event_home_removeRoomButtonActionPerformed
+
+    private void roomsTableFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_roomsTableFocusGained
+        // TODO add your handling code here:
+        home_editRoomButton.setEnabled(true);
+        home_removeRoomButton.setEnabled(true);
+    }//GEN-LAST:event_roomsTableFocusGained
+
+    private void roomsTableFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_roomsTableFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_roomsTableFocusLost
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -244,29 +326,19 @@ public class HomeFrm extends javax.swing.JFrame implements View {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable InvoiceManagement;
-    private javax.swing.JTable customersManagement;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel customerPanel;
+    private javax.swing.JTable customerTable;
+    private javax.swing.JButton home_editRoomButton;
+    private javax.swing.JButton home_newRoomButton;
+    private javax.swing.JButton home_removeRoomButton;
+    private javax.swing.JPanel invoicePanel;
+    private javax.swing.JTabbedPane invoiceTabName;
+    private javax.swing.JTable invoiceTable;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JButton newRoomButtonFromHome;
-    private javax.swing.JTable roomManagement;
+    private javax.swing.JPanel roomPanel;
+    private javax.swing.JTable roomsTable;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public <T> void showAsTable(List<T> list, DefaultTableModel model) {
-        model.setRowCount(0);
-        for (T t : list) {
-            if (t instanceof Phong) {
-                Phong tmp = (Phong) t;
-                model.addRow(new Object[]{
-                    tmp.getId(), tmp.getName(), tmp.getLoaiphong()
-                });
-            }
-        }
-    }
 }
