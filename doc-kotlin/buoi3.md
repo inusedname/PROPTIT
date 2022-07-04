@@ -27,7 +27,7 @@ class Person { /*...*/ }
 
 ## Primary Constructor
 
-Trong Kotlin, class có thể có 1 primary constructor và có thể có nhiều hơn một secondary constructor. Nhưng mà kiểu gì cũng phải có constructor.
+Trong Kotlin, class có thể có 1 primary constructor và có thể có nhiều hơn một secondary constructor. Nếu không thấy có constructor nào, Kotlin sẽ ngầm định tạo ra một constructor không tham số.
 ```kt
 class Person constructor(firstName: String) { /*...*/ }
 // hay ngắn gọn hơn là:
@@ -125,6 +125,9 @@ class Student (val name: String) { // <= Cách 1
 [X] Mặc định class là: `public final`\
 [X] Do là `final` nên sẽ không thể kế thừa như trong Java được. Khi đó sẽ cần dùng đến từ khoá `open`, sẽ được giải thích trong phần kế thừa.
 
+### Method
+- Không khác gì các ngôn ngữ khác, cấu trúc là `fun` + `tên method` + `(tham số 1, tham số 2)` + { body }
+- Gọi tới method/property dùng dấu chấm: `object.method`
 ### Getter & Setter
 
 Trong các ngôn ngữ khác (C++, Java): Getter, setter là một **method** của class. Còn trong Kotlin, thuộc tính/biến có thể là return của một hàm khác <- Code ngắn gọn hơn.
@@ -230,4 +233,70 @@ Phân loại:
         // o.c and o.d are visible (same module)
         // Outer.Nested is not visible, and Nested::e is not visible either
     }
+    ```
+
+## Abstract Class
+- Định nghĩa: Lớp trừu tượng. Lớp sinh ra là để được kế thừa.
+- Bên trong body của class này vẫn chứa các properties/methods như class bình thường, nhưng nó có thêm một số members khác, hơi _bất thường_.
+
+```kt
+abstract class Polygon {
+    fun sayHello() = println("Hello")
+    abstract fun draw()  // Bất thường (không có body)
+}
+
+class Rectangle : Polygon() {
+    override fun draw() {
+        // draw the rectangle
+    }
+}
 ```
+
+- Các member _bất thường_, được đánh dấu với `abstract` thì các class kế thừa abstract class này __bắt buộc__ phải `override` lại member này.
+- Lớp abstract sinh ra là để bị kế thừa. Member abstract sinh ra, là để bị ghi đè.
+
+- Ngoài ra thì ta cũng có thể ghi đè một member khi class chứa nó không phải abstract, bằng từ khoá `open`:
+```kt
+open class Polygon {
+    open fun draw() {
+        // some default polygon drawing method
+    }
+}
+
+abstract class WildShape : Polygon() {
+    // Classes that inherit WildShape need to provide their own
+    // draw method instead of using the default on Polygon
+    abstract override fun draw()
+}
+```
+
+## Interfaces
+- Có thể hiểu rằng: 
+    + Class là một bản vẽ, và kiến trúc sư có thể tạo ra nhiều ngôi nhà từ 1 bản vẽ, mỗi ngôi nhà có một số điểm khác nhau nho nhỏ. 
+    + Interface là những options khách A, khách B muốn lựa chọn. Option này có thể là: có vườn thượng, có bể bơi, có thang máy...
+- Định nghĩa: _Bất thường_ giống abstract class, nhưng các members đều phải là abstract.
+
+```kt
+interface MyInterface {
+    val prop: Int // abstract
+
+    val propertyWithImplementation: String
+        get() = "foo"
+
+    fun foo() {
+        print(prop)
+    }
+}
+
+class Child : MyInterface {
+    override val prop: Int = 29
+}
+```
+- Ở ví dụ trên ta thấy `fun foo()` có body, điều này đáng lẽ là trái với quy tắc của interface. Tuy nhiên đây là không phải là một method bình thường, nó là `default method`. Điểm khác biệt là loại method đặc biệt này không bắt buộc phải bị override.
+## So sánh Interface và Abstract Class
+|  | Abstract Class | Interface |
+|---|---|---|
+| Non-abstract Members | Có cho phép | Không cho phép |
+| Đa kế thừa | Không cho phép Đa kế thừa | Cho phép đa kế thừa nhiều interfaces |
+| Kế thừa từ đứa còn lại | Abstract extends được interface | Interface không extends được abstract |
+| Ý nghĩa | Là một template class cho một loạt các class có chức năng tương tự nhau. 'Is-A' | Là một tính năng có thể xuất hiện ở một số các class. 'Can-do' |
