@@ -14,9 +14,13 @@
   * [Secondary Constructor:](#secondary-constructor-)
   * [Thuộc tính](#thu-c-t-nh)
     + [Khai báo một thuộc tính trong class có hai cách:](#khai-b-o-m-t-thu-c-t-nh-trong-class-c--hai-c-ch-)
+    + [Method](#method)
     + [Getter & Setter](#getter---setter)
     + [Lateinit](#lateinit)
   * [Visibility Modifiers (hay access modifier)](#visibility-modifiers--hay-access-modifier-)
+  * [Abstract Class](#abstract-class)
+  * [Interfaces](#interfaces)
+  * [So sánh Interface và Abstract Class](#so-s-nh-interface-v--abstract-class)
 ## Class
 
 Cấu trúc hướng đối tượng trong Kotlin được định nghĩa bằng từ khoá `class`
