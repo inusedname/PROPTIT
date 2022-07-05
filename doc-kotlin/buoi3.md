@@ -89,7 +89,7 @@ class Pet {
     }
 }
 ```
-Nếu class có primary constructor và có thêm các secondary constructor, chúng ta __bắt buộc__ phải delegate secondary cho primary. Để giải thích về vấn đề này ta có ví dụ:
+Nếu class đã có primary constructor và có thêm các secondary constructor, chúng ta __bắt buộc__ phải delegate secondary cho primary. Để giải thích về vấn đề này ta có ví dụ:
 ```kt
 class Rectangle(val width: Int, val height: Int) {
 
@@ -165,7 +165,23 @@ class Hmmmm {
 
 // Ở bên ngoài class thì không được phép modify _readOnly nữa, chỉ đọc
 ```
-
+### Lazy
+- Một thuộc tính:
+    + Tốn tài nguyên - thời gian
+    + Chưa cần sử dụng ngay sau khi tạo object\
+    -> tức là có thể khởi tạo sau
+- Cú pháp:
+```kt
+val name: (Any) by lazy { // khối lệnh lambda
+     // giá trị
+     // ví dụ như: 
+     3
+     "Hello"
+     Rectangle(3,4)
+}
+```
+- Lần đầu tiên gọi tới lazy, chương trình sẽ thực thi khối lệnh lambda trên và gán return của nó cho val.
+- Lần thứ hai trả về val như biến thông thường.
 ### Lateinit 
 - Một thuộc tính được tạo ra thì bắt buộc phải có giá trị cho nó trong constructor hoặc init... Nếu không thì
 ```kt
