@@ -72,7 +72,7 @@ Second property: 5
 Second initializer block that prints 5
 ```
 
-Nhận xét:
+Nhận xét (không liên quan tới ví dụ trên)
 - 1 secondary và 1 init block cùng tồn tại: Khối init sẽ được thực thi trước, rồi mới đến secondary.
 - 2+ init block cùng tồn tại: Thứ tự thực thi sẽ là từ trên xuống của định nghĩa class.
 - 2+ secondary và 1 init: Init luôn chạy rồi sẽ đến constructor thực thi. 
@@ -130,8 +130,14 @@ class Student (val name: String) { // <= Cách 1
 [X] Do là `final` nên sẽ không thể kế thừa như trong Java được. Khi đó sẽ cần dùng đến từ khoá `open`, sẽ được giải thích trong phần kế thừa.
 
 ### Method
-- Không khác gì các ngôn ngữ khác, cấu trúc là `fun` + `tên method` + `(tham số 1, tham số 2)` + { body }
-- Gọi tới method/property dùng dấu chấm: `object.method`
+- Không khác gì các ngôn ngữ khác, cấu trúc là `special keyword` + `fun` + `tên method` + `(tham số 1..n)` + { body }
+- Ví dụ:
+```kt
+open private fun sayHello() {
+    println("Hello World")
+} 
+```
+- Gọi tới method/property dùng dấu chấm: `object.tên_method`
 ### Getter & Setter
 
 Trong các ngôn ngữ khác (C++, Java): Getter, setter là một **method** của class. Còn trong Kotlin, thuộc tính/biến có thể là return của một hàm khác <- Code ngắn gọn hơn.
