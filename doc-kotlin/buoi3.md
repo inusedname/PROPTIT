@@ -121,6 +121,7 @@ class Student (val name: String) { // <= Cách 1
 ```
 
 - Với cách 1, primary constructor vừa đóng vai trò là định nghĩa thuộc tính, vừa đóng vai trò là setter thuộc tính.
+- Lưu ý kiểu này chỉ được áp dụng cho primary chứ ko cho secondary
 - So sánh với các ngôn ngữ khác mà em được biết (C++, Java) thì đây là ngôn ngữ đầu tiên cho phép làm điều này (ngắn code hơn)
 - Nếu không muốn tạo property `name` thì chỉ cần bỏ từ khoá `val` trong primary constructor
 - Cách 2 thì đã có trong các ngôn ngữ khác
@@ -140,8 +141,11 @@ open private fun sayHello() {
 - Gọi tới method/property dùng dấu chấm: `object.tên_method`
 ### Getter & Setter
 
-Trong các ngôn ngữ khác (C++, Java): Getter, setter là một **method** của class. Còn trong Kotlin, thuộc tính/biến có thể là return của một hàm khác <- Code ngắn gọn hơn.
-
+- Các biến trong Kotlin luôn được cung cấp getter và setter. 
+- Khi gán hay yêu cầu đọc 1 biến, thực chất là đang gọi tới getter và setter của biến đó. Trong các ngôn ngữ khác thì đó là truy cập trực tiếp tới địa chỉ của biến trên bộ nhớ.
+- Sử dụng getter setter, ta thao tác với biến `field`, thay vì `this`
+- Trong các ngôn ngữ khác (C++, Java): Getter, setter là một **method** của class. Còn trong Kotlin, thuộc tính/biến có thể là return của một hàm khác <- Code ngắn gọn hơn.
+- Getter Setter đi cùng Access Modifier: Khoảng của getter setter không được lớn hơn khoảng của biến đó.
 ```kt
 class Rectangle (val width: Int, val height: Int) {
     val area: Int
@@ -214,7 +218,7 @@ Có 4 visibility modifiers trong Kotlin:
 1. public
 2. protected
 3. private
-4. internal
+4. internal: cùng một module thì được phép truy cập
 
 Phân loại: 
 1. Những cái không phải là class member (properties và methods)\
@@ -262,7 +266,8 @@ Phân loại:
     ```
 
 ## Abstract Class
-- Định nghĩa: Lớp trừu tượng. Lớp sinh ra là để được kế thừa.
+- Định nghĩa: Lớp trừu tượng. Lớp sinh ra là để bị kế thừa.
+- Abstract Class khác class thường là abs class này mặc định là open
 - Bên trong body của class này vẫn chứa các properties/methods như class bình thường, nhưng nó có thêm một số members khác, hơi _bất thường_.
 
 ```kt
@@ -326,3 +331,10 @@ class Child : MyInterface {
 | Đa kế thừa | Không cho phép Đa kế thừa | Cho phép đa kế thừa nhiều interfaces |
 | Kế thừa từ đứa còn lại | Abstract extends được interface | Interface không extends được abstract |
 | Ý nghĩa | Là một template class cho một loạt các class có chức năng tương tự nhau. 'Is-A' | Là một tính năng có thể xuất hiện ở một số các class. 'Can-do' |
+
+## Một vài cái note khác:
+- Coding convention:
+    + val p: Int
+    + class first : second
+    + Ta cần để ý vị trí dấu hai chấm của 2 trường hợp trên
+- Thường thì ta để thuộc tính là public hết, vì khi compile sang Java thì kotlin luôn biến cái biến đấy thành private và tự gen getter và setter.
