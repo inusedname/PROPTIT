@@ -114,7 +114,110 @@ Theo như [java](https://docs.oracle.com/javase/tutorial/java/generics/why.html#
 2. Hạn chế phát sinh lỗi liên quan đến kiểu dữ liệu
 3. Không cần cast.
 4. Sử dụng khi thiết kế thuật toán (áp dụng cho 98% kiểu dữ liệu)
+## Scope Functions
+### Phần này là để làm rõ this và it, giờ hãy đi tới [scope function](#scope-function)
+### Extensions trong Kotlin:
+Có một class gốc (class này ta không được phép chỉnh sửa vào core (ví dụ như Int, List...) Có một cách để ta tự thêm một function riêng cho class này
+
+```kt
+fun MutableList<Int>.swap(index1: Int, index2: Int) {
+    val tmp = this[index1] // 'this' corresponds to the list
+    this[index1] = this[index2]
+    this[index2] = tmp
+}
+```
+- Bắt đầu bằng tên của class đã đóng, theo sau là dot và tên của function bạn muốn quy định.
+
+- Extension có thể áp dụng cho cả function và property
+```kt
+val <T> List<T>.lastIndex: Int
+    get() = size - 1
+```
+
+### Receiver
+Nhìn vào ví dụ trên: chính cái class đã đóng gọi là Receiver: đứa mà handle dữ liệu, nhận và xử lý dữ liệu
+- Nói tóm lại: Một class nào đó là receiver khi: 1. ta gọi trực tiếp function nằm bên trong định nghĩa class. 2. Ta sử dụng extensions fun gọi từ bên ngoài.
+- Cả hai cách trên đều yêu cầu chúng ta viết function riêng. Làm thế nào để biến class thành receiver mà không cần viết function: `with`
+- Ví dụ:
+```kt
+with(aliceGreeter) {
+    println("Hello again, $name!")
+}
+```
+Tóm tắt:
+- Khi gọi `someObject.someFunction()`, `someObject` là một __receiver__ tiếp nhận lời gọi function.
+- Trong `someFunction`, `someObject` đã được xác định là receiver sử dụng cho `someFunction`, và có thể tham chiếu đến bằng `this`
+- Khi một receiver đã được xác định, ta có thể bỏ qua `this` và truy cập tới members của nó: __implicit receiver__
+- `with` function sử dụng __lambda with receiver__ để khiến receivers có mặt tại bất cứ đâu (bên trong lambda) chứ không chỉ giới hạn tại member function và extension function.
+- Why are we still here? Just to suffer?
+### Scope Function
+- Định nghĩa: Là function cho phép ta thực thi một đoạn code trên phạm vi một object. Đoạn code được gọi là lambda expression.
+```kt
+Person("Alice", 20, "Amsterdam").let {
+    println(it)
+    it.moveTo("London")
+    it.incrementAge()
+    println(it)
+}
+```
+Các scope funtion được phân loại dựa trên:
++ Trả về
++ Context của object
+
+### Context Object: this hay it ?
+
+```kt
+val adam = Person("Adam").apply { 
+    age = 20                       // same as this.age = 20
+    city = "London"
+}
+println(adam)
+```
+```kt
+fun getRandomInt(): Int {
+    return Random.nextInt(100).also {
+        writeToLog("getRandomInt() generated value $it")
+        // writeRandom(it)
+    }
+}
+// giống với
+// fun writeRandom(it: Int) {
+//     writeToLog("getRandomInt() generated value $it")
+// }
+
+val i = getRandomInt()
+println(i)
+```
+- Dùng this khi: Cần thao tác với members của object: Gọi tới method, gán giá trị cho property.
+- Dùng it khi: Sử dụng chính object đó như một đầu vào.
+### Return Value:
+Có hai kiểu trả về:
+1. Không trả về: Object đã bị thay đổi
+2. Trả về là kết quả lambda: lambda return gì thì trả về là cái đấy. Object vẫn bị thay đổi.
+### Phân loại
+#### Đọc [Extensions Function](#extensions-trong-kotlin)
+| Function | Object reference | Return value | Is extension function |
+|---|---|---|---|
+| let | it | Lambda result | Yes |
+| run | this | Lambda result | Yes |
+| run | - | Lambda result | No: called without the context object |
+| with | this | Lambda result | No: takes the context object as an argument. |
+| apply | this | Context object | Yes |
+| also | it | Context object | Yes |
+
+Áp dụng:
+- Áp dụng lambda lên object!!: `let`
+- Sử dụng giá trị của biểu thức là đầu vào của lambda: `let`
+- Thay đổi context object: `apply`
+- Thay đổi context object và có đầu ra: `run`
+- Running statements where an expression is required: non-extension `run`
+- Additional effects: `also`
+- Sử dụng nhiều function lên object.: `with`
+## Tại sao sử dụng scope funtion:
+- Khi cần thực thi một số các lệnh với phạm vi là 1 object
+- Tối ưu hoá code: Thay vì viết một loạt các tên biến ra thì sử dụng this hoặc it.
 ## Tham khảo tại:
-https://romig.dev/blog/c-oop-primer-generics/
-https://viblo.asia/p/su-dung-bounded-wildcard-hieu-qua-trong-java-6J3ZgkaRZmB
-https://www.youtube.com/watch?v=l6zkaJFjUbM
+https://romig.dev/blog/c-oop-primer-generics/\
+https://viblo.asia/p/su-dung-bounded-wildcard-hieu-qua-trong-java-6J3ZgkaRZmB\
+https://www.youtube.com/watch?v=l6zkaJFjUbM\
+https://stackoverflow.com/questions/45875491/what-is-a-receiver-in-kotlin/45875492#45875492\
