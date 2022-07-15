@@ -133,7 +133,7 @@ fun MutableList<Int>.swap(index1: Int, index2: Int) {
 val <T> List<T>.lastIndex: Int
     get() = size - 1
 ```
-
+- Có thể truy cập vào các public member và internal member (nếu cùng module). Vẫn đảm bảo tính OOP.
 ### Receiver
 Nhìn vào ví dụ trên: chính cái class đã đóng gọi là Receiver: đứa mà handle dữ liệu, nhận và xử lý dữ liệu
 - Nói tóm lại: Một class nào đó là receiver khi: 1. ta gọi trực tiếp function nằm bên trong định nghĩa class. 2. Ta sử dụng extensions fun gọi từ bên ngoài.
@@ -205,6 +205,7 @@ Có hai kiểu trả về:
 | apply | this | Context object | Yes |
 | also | it | Context object | Yes |
 
+- Dùng let và apply là nhiều
 Áp dụng:
 - Áp dụng lambda lên object!!: `let`
 - Sử dụng giá trị của biểu thức là đầu vào của lambda: `let`
@@ -221,3 +222,9 @@ https://romig.dev/blog/c-oop-primer-generics/\
 https://viblo.asia/p/su-dung-bounded-wildcard-hieu-qua-trong-java-6J3ZgkaRZmB\
 https://www.youtube.com/watch?v=l6zkaJFjUbM\
 https://stackoverflow.com/questions/45875491/what-is-a-receiver-in-kotlin/45875492#45875492\
+
+### Mới:
+Type: Tên của class.
+Instance là cái nằm trên bộ nhớ, object là cái nằm trên code
+Cận trên của type projection:
+Class x<T: Person> : T chỉ được tối đa là Person
