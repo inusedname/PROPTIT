@@ -73,7 +73,7 @@ fun main() {
 
 ### Companion Object
 - Từ khoá `static` trong Kotlin được sử dụng bằng `companion object`: các object này có thể truy cập thẳng từ `TênClass.TênMember` mà không phải khởi tạo một object val... gì đó như bình thường.
-
+- Một class chỉ có 1 com. object. Com object thì có thể private.
 ## Callback
 - Các khái niệm: 
     + Hàm trong Kotlin có thể sử dụng như một biến/tham số.
