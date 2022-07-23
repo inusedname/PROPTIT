@@ -32,7 +32,7 @@ View là tất cả những thứ đập vào mắt chúng ta trên App Android.
 Là nhóm các View nhỏ lại thành một nhóm để dễ quản lý hoặc muốn sắp xếp chúng theo một trật tự mong muốn.
 ### Các GroupView
 - Linear: Các layout con sắp xếp thẳng hàng theo một cột (chiều dọc) hay một hàng (chiều ngang)
-- Frame: Để hiện popup: Hiển thị một cái view con nằm chình ình trên màn hình. Chỉ chứa duy nhất 1 child
+- Frame: Hiển thị một cái view con nằm chình ình trên màn hình. Nên chỉ chứa duy nhất 1 child
 - Relative: Vị trí của child A có thể liên quan tới child B và ngược lại. Vậy nên ta mới gọi là tương đối
 - Constraint: ViewGroup sắp xếp, resize child một cách cơ động.
 - Coordinator: Layout cho phép ta dịch chuyển vị trí các child.
@@ -54,3 +54,19 @@ Là nhóm các View nhỏ lại thành một nhóm để dễ quản lý hoặc 
 - Ripple: Hiệu ứng gợn sóng
 ![ripple](/doc-kotlin/res/60Byk.gif)
 - LayerList: Kết hợp nhiều hình khối đơn giản (shape xml) lại với nhau để tạo thành một khối phức tạp và mới mẻ.
+
+## Note buổi học
+- Tên id là tv_first_fragment
+- Padding là từ actual content tới border
+- Margin là khoảng cách từ view này đến view kia
+![](/doc-kotlin/res/padding_vs_margin.png)
+- Gravity là vị trí tương đối của actual content bên trong border: ví dụ như top|left thì sẽ nằm dịch về trái giữa của border
+- Layout Gravity
+- TextView: drawable top, bottom
+- Ripple là một drawable: nó có tác dụng là một animation đổi màu surround của content nhằm mục đích thông báo cho người dùng biết là đã được tương tác
+- Từ mới: Bias là thiên vị
+- https://www.quora.com/What-is-the-difference-between-left-to-left-and-start-to-start-in-an-Android
+<!-- TODO: Phân biệt app, android, tool --> 
+- Muốn để một thằng chưa biết rõ kích thướng thì để height nó là matchparent + weight = 1
+    + Cái tổng ngoài cùng dùng weightsum = 5 chẳng hạn: chia làm 5 phần
+    + Sau đó set weight cho các cái con 
