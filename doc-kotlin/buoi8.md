@@ -1,12 +1,12 @@
 # Binding - Activity - Intents
 > Nội dung cần nắm
-    - Binding cơ bản (findViewById, View Binding).
-    - Activity, vòng đời Activity.
-    - Implicit intent vs explicit intent.
+    - Binding cơ bản (findViewById, View Binding).\
+    - Activity, vòng đời Activity.\
+    - Implicit intent vs explicit intent.\
 
 ## Activity
 > Tham khảo
-    ⭐ https://developer.android.com/reference/android/app/Activity
+    ⭐ https://developer.android.com/reference/android/app/Activity\
     ⭐ https://developer.android.com/guide/components/activities/intro-activities
 - Activity là một thành phần quan trọng trong App Android mà user tương tác trên nó, và là nơi để chúng ta đặt các UI component lên trên
 - Thông thường trong các chương trình functional, hàm main() sẽ khởi động, tuy nhiên đối với Android app, hàm main() sẽ được thay bằng một Activity đánh dấu là __Activity BẮT ĐẦU__
@@ -40,3 +40,36 @@
 ### onDestroy() - Destroy
 - Callback này được gọi khi activity kết thúc vòng đời.
 - Đảm bảo các tài nguyên Activity sử dụng được giải phóng
+
+## Intents
+> Tham khảo: 
+    https://developer.android.com/guide/components/intents-filters\
+    https://developer.android.com/reference/android/content/Intent
+- Intent là một messaging object (object truyền thông tin) sử dụng để request 1 action từ component.
+![](/doc-kotlin/res/intent-filters_2x.jpg)
+- Có 3 use case chính:
+    + Bắt đầu 1 Activity: 
+        * startActivity(Intent)
+        * startActivityForResult(): Bắt đầu activity và nhận về kết quả từ activity đó
+    + Bắt đầu 1 service
+    + Thông báo với điện thoại/broadcast
+- Thành phần chính của Intent:
+    1. action: Ta muốn thực hiện hành động gì, ta muốn làm gì ?
+    2. data: Ta sẽ làm việc với dữ liệu này.
+- Một số ví dụ:
+    + __ACTION_VIEW content://contacts/people/1__ -- Show thông tin của person có id 1
+    + __ACTION_DIAL content://contacts/people/1__ -- Mở chế độ quay số điện thoại với thông tin của person có id 1
+    + __ACTION_DIAL tel:123__ -- Mở chế độ quay số điện thoại với số "123"
+    + __ACTION_VIEW tel:123__ -- Mở chế độ quay số điện thoại với số "123". Trong trường hợp chung chung như thế này, VIEW sẽ lựa chọn một hành động nào đó mà được coi là hợp lí nhất: ACTION_DIAL
+    + __ACTION_EDIT content://contacts/people/1__ -- Sửa thông tin của person có id 1
+    + __ACTION_VIEW content://contacts/people/__ -- Hiển thị một list các liên lạc trong danh bạ
+    
+- Bên cạnh 2 thành phần chính, các thành phần phụ là:
+    > category, type, component, extras
+
+### Phân loại Intent
+__Explicit__ (tường minh/rõ ràng) và __implicit__ (ngầm định)
+- Explicit là intent được cung cấp chính xác tên component/class phụ trách xử lý Intent. 
+    + Thông thường thì explicit sẽ không cần thông tin cụ thể hơn (ngoài tên class), do nó chỉ có nhiệm vụ bắt đầu một activity khi người dùng tương tác. 
+- Implicit là intent không chỉ đích danh một component hay class nào. Thay vì đó, nó sẽ chứa một số cờ phụ và hệ thống sẽ tự lựa ra đâu là component nên được sử dụng.
+- Ví dụ cho implicit: Click vào 1 email điện thoại sẽ hiện ra một menu gồm các app Email: Gmail, Outlook...
