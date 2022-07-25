@@ -52,7 +52,7 @@
         * startActivity(Intent)
         * startActivityForResult(): Bắt đầu activity và nhận về kết quả từ activity đó
     + Bắt đầu 1 service
-    + Thông báo với điện thoại/broadcast
+    + Thông báo với điện thoại  /broadcast
 - Thành phần chính của Intent:
     1. action: Ta muốn thực hiện hành động gì, ta muốn làm gì ?
     2. data: Ta sẽ làm việc với dữ liệu này.
@@ -73,3 +73,126 @@ __Explicit__ (tường minh/rõ ràng) và __implicit__ (ngầm định)
     + Thông thường thì explicit sẽ không cần thông tin cụ thể hơn (ngoài tên class), do nó chỉ có nhiệm vụ bắt đầu một activity khi người dùng tương tác. 
 - Implicit là intent không chỉ đích danh một component hay class nào. Thay vì đó, nó sẽ chứa một số cờ phụ và hệ thống sẽ tự lựa ra đâu là component nên được sử dụng.
 - Ví dụ cho implicit: Click vào 1 email điện thoại sẽ hiện ra một menu gồm các app Email: Gmail, Outlook...
+
+## Binding
+### Binding cơ bản: findViewById()
+(1) Trong XML - file layout: Các View, trong hầu hết mọi trường hợp, đều chứa attribute `android:id`. Attr này để chúng ta có thể sử dụng View trong file code Kotlin hoặc Java. 
+(2) Trong file source Java hoặc Kotlin, sau khi setContentView(layout) trong Activity, ta có thể bắt đầu sử dụng hàm `findViewById()` để tìm và lưu lại instance đó để tiện sử dụng
+- Ví dụ:
+```XML
+    <TextView>
+        ...
+        android:id='@+id/tênView 
+    </TextView>
+```
+```kt
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+
+    val tv = findViewById(R.id.tênView)
+
+}
+
+```
+### R.id.tênView là cái gì ?
+__Q__: Tại sao chúng ta lại có một cái `R.id.tênView` ở đây, mặc dù chẳng có một class nào tên là `R` trong `src`, mà class `R` đấy Ctrl Click vào cũng chỉ đưa ta ngược trở lại file XML ?\
+
+__A__: Trong project, có một file tên là R.java. File này ẩn ở đâu đó (em chưa tìm ra), và nó được hệ thống build của Android tự động tạo ra. Bên trong đó là toàn bộ các tham chiếu tới View/String/Layout tồn tại bên trong thư mục res.
+https://stackoverflow.com/questions/49830651/what-does-r-id-myview-refer-to
+
+Ví dụ của file R.java:
+```java
+public final class R {  
+    public static final class attr {  
+    }  
+    public static final class drawable {  
+        public static final int ic_launcher=0x7f020000;  
+    }  
+    public static final class id {  
+        public static final int menu_settings=0x7f070000;  
+    }  
+    public static final class layout {  
+        public static final int activity_main=0x7f030000;  
+    }  
+    public static final class menu {  
+        public static final int activity_main=0x7f060000;  
+    }  
+    public static final class string {  
+        public static final int app_name=0x7f040000;  
+        public static final int hello_world=0x7f040001;  
+        public static final int menu_settings=0x7f040002;  
+    }  
+    public static final class style {  
+
+        public static final int AppBaseTheme=0x7f050000;  
+        public static final int AppTheme=0x7f050001;  
+    }  
+}
+```
+## ViewBinding
+- Đây là thành phần đầu tiên của Android Jetpack được giới thiệu - Một thư viện tiện ích do Google phát triển: (1) hạn chế code dư thừa, dài dòng, lặp lại, (2) tăng cường tính ổn định trên nhiều thiết bị, nhiều Android version.
+- Ví dụ như sau
+```kt
+{
+    val textview = findViewById(R.id.tênView)
+    textview.setText("Hello World")
+
+    // Ngắn hơn nữa thì:
+    findViewById(R.id.tênView).setText("Hello World")
+
+    // Vẫn hơi dài nhỉ, giá như:
+    R.id.tênView.setText("Hello World)"
+}
+```
+Tận dụng cái file `R.java` như đã giới thiệu ở trên, tại sao chúng ta không, khởi tạo hết các object TextView, LinearLayout ngay từ đầu nhỉ, xong rồi mỗi lần muốn dùng chỉ việc gọi tới cái object đó thôi :v 
+
+viewBinding ra đời.
+
+### Bước 1: Enable View Binding
+Tại `build.gradle (Module)`:
+```xml
+android {
+    ...
+    buildFeatures {
+        viewBinding true
+    }
+}
+```
+
+### Bước 2: XML
+```xml
+<LinearLayout ... >
+    <TextView android:id="@+id/name" />
+    <ImageView android:cropToPadding="true" />
+    <Button android:id="@+id/button"
+        android:background="@drawable/rounded_button" />
+</LinearLayout>
+```
+Ở đây có cái `TextView` và `Button` thì có attr id, còn `ImageView` thì không. Một file có tên là `tênXmlBinding` được tự động tạo ra, và bên trong nó là object `TextView` có tên là name và `Button` có tên là button
+![](/doc-kotlin/res/viewBinding.png)
+> Hình minh hoạ, không giống với ví dụ.
+
+### Bước 3: Sử dụng viewBinding
+- Thêm một số dòng sau vào Activity:
+```kt
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+    }
+}
+```
+Xong rồi, giờ nếu mà muốn dùng một cái View nào thì cứ `binding.tênView` là xong:
+![](/doc-kotlin/res/Screenshot%202022-07-26%20004816.png)
+### Điểm lợi
+- Tiện, nhanh
+- Null safety: Do binding lưu trực tiếp tham chiếu tới view đó, nên không lo là view đó bị null. 
+- Type safety: XML bảo nó thuộc class/type nào thì vào binding nó sẽ y hệt, nên không lo bị sai class.
+### Điểm hại:
+- Tất cả các view đều được gen
+Nhiều file hơn -> App nặng hơn -> Build lâu hơn.
+Tuy nhiên đấy là với project rất lớn (1k layout+) chứ app bình thường thì không ăn thua mấy.
