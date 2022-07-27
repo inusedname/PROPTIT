@@ -73,6 +73,7 @@ __Explicit__ (tường minh/rõ ràng) và __implicit__ (ngầm định)
     + Thông thường thì explicit sẽ không cần thông tin cụ thể hơn (ngoài tên class), do nó chỉ có nhiệm vụ bắt đầu một activity khi người dùng tương tác. 
 - Implicit là intent không chỉ đích danh một component hay class nào. Thay vì đó, nó sẽ chứa một số cờ phụ và hệ thống sẽ tự lựa ra đâu là component nên được sử dụng.
 - Ví dụ cho implicit: Click vào 1 email điện thoại sẽ hiện ra một menu gồm các app Email: Gmail, Outlook...
+- Explicit thì để giao tiếp trong app, implicit thì để giao tiếp giữa app này với app kia.
 
 ## Binding
 ### Binding cơ bản: findViewById()
@@ -190,9 +191,12 @@ Xong rồi, giờ nếu mà muốn dùng một cái View nào thì cứ `binding
 ![](/doc-kotlin/res/Screenshot%202022-07-26%20004816.png)
 ### Điểm lợi
 - Tiện, nhanh
+- findView phải tìm kiếm trong cây view nên sẽ tốn thời gian, trong khi đó thì binding sẽ là tham chiếu trực tiếp tới file Binding của Activity.
 - Null safety: Do binding lưu trực tiếp tham chiếu tới view đó, nên không lo là view đó bị null. 
 - Type safety: XML bảo nó thuộc class/type nào thì vào binding nó sẽ y hệt, nên không lo bị sai class.
 ### Điểm hại:
 - Tất cả các view đều được gen
 Nhiều file hơn -> App nặng hơn -> Build lâu hơn.
 Tuy nhiên đấy là với project rất lớn (1k layout+) chứ app bình thường thì không ăn thua mấy.
+### Coding convention
+- Nên đặt tên View `@+id/tv_tên_view` để lúc dùng View Binding thì Object sinh ra sẽ có tên là `TextView tênView`

@@ -1,2 +1,2 @@
-del /S *.exe *.bin
+del /S *.exe *.class *.o *.object
 pause
