@@ -7,15 +7,18 @@
     Chuẩn bị bài tập: Thiết kế 3 màn login, sign up, main như hình.
     Mô tả bài tập: 1 activity chứa 2 fragmnet (login, sign up), 1 activity main. Sau khi login thành công chuyển username sang activity main và hiển thị, sau khi đăng kí thành công chuyển username sang màn login và đợi nhập mật khẩu. Data user fix cứng dưới dạng list trong code.
     Yêu cầu bắt buộc: sử dụng FragmentTransaction để navigate giữa các fragment.
+
+> Link tham khảo:\
+    https://guides.codepath.com/android/creating-and-using-fragments#understanding-fragments
 ## Fragment
 - Fragment là một phần diện tích của màn hình, activity được tái sử dụng. 
-- Một fragment có riêng cho nó layout, có riêng 1 lifecycle cũng như có riêng phần xử lý event từ người dùng.
-### Tính mô đun
-- Fragment cho phép chúng ta áp dụng tính __mô đun__ và tính __tái sử dụng__ vào trong UI app bằng cách: Kết hợp của một Global component (component có mặt ở nhiều Activity, ví dụ như: thanh điều hướng, thanh search...) và một diện tích đã cố định có khả năng thay đổi layout dựa trên mục đích sử dụng (ví dụ: có 4 tab: Tab Overview, tab List, tab Manager, tab Setting).
-- Fragment không thể tồn tại một mình, nó cần có một thứ bao bọc nó: Activity, hoặc là 1 fragment cha.
+- Một fragment có layout, và cũng có một file class Java/Kt, nên nó rất giống với Activity
+- Fragment encapsulate View và Logic, nên ta có thể bưng nó đi bất cứ đâu và tái sử dụng được. 
+=> Áp dụng kiến trúc thiết kế "Hướng Fragment", ta có thể biến Activity trở thành một trạm trung chuyển dùng để điều hướng UI, là nơi trung gian để truyền dữ liệu, hiển thị fragment và goto Activity khác. 
 ### Fragment Lifecycle
 ### Sử dụng Fragment
-1. Thêm dependencies:
+0. Cách ít sử dụng: Nhúng cứng một fragment vào Activty: tương tự như `<include>`: dùng `<fragment>`
+1. Thêm dependencies (có vẻ không cần thiết ở các bản Android mới hơn) :
 ```groovy
 dependencies {
     def fragment_version = "1.5.0"
@@ -44,13 +47,23 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 ```
 - Lưu ý: Thuộc tính `android:name` là để khai báo tên của Fragment đầu tiên sẽ xuất hiện khi Activity được bắt đầu
 - Quy trình
-    1. Activity chứa các fragment được inflate() 
-    2. Fragment được khai báo ở `android:name` của `FragmentContainerView` được khởi tạo 
-    3.  Một `FragmentTransaction` sẽ được tạo ra để add cái fragment bên trên vào `FragmentManager`
+    1. Activity chứa `FragmentContatinerView` được inflate() 
+    2. Trong `FragmentContainerView`, Fragment trong thuộc tính `android:name` được khởi tạo 
+    3.  Một `FragmentTransaction` được tạo ra để add fragment bên trên vào `FragmentManager`
 
 ### FragmentTransaction
 - Khi activity đang chạy, ta có thể thêm, xoá hay thay thế một fragment trong stack fragment.
-- Chúng ta sẽ sử dụng `FragmentManager` để tạo ra một hợp đồng `FragmentTransaction`. Sau đó, gọi tới `FragmentTransaction.add<FragmentClass>(container_id)`. Trong đó, `FragmentClass` là Class của Fragment ta muốn chuyển sang, `containter_id` là ID của Container View mà ta muốn áp dụng.
+- Chúng ta sẽ sử dụng `FragmentManager` để tạo ra một hợp đồng `FragmentTransaction`. Cách để lấy `FragmentManager` như sau:
+    + Nếu muốn lấy từ trong Activity: sử dụng `getSupportFragmentManager`
+    + Nếu muốn lấy từ trong Fragment: sử dụng 
+    `getParentFragmentManager` để lấy cái mà quản lý Fragment đó, và `getChildFragmentManager` để lấy cái mà quản lý các Fragment con nằm bên trong Fragment đó.
+- Các hàm hay sử dụng:
+    + add(): Thêm fragment mới vào FragManager
+    + attach(): Attach lại một fragment sau khi nó bị detach() khỏi UI.
+    + commit(): Submit hợp đồng Transaction này.
+    + detach(): Detach fragment ra khỏi UI. Toàn bộ các View của nó(fragment bị detached) bị destroyed, tuy nhiên state của nó thì vẫn nằm trong sự quản lý của FragMananger
+    + remove(): Xoá một Fragment ra khỏi FragManager
+    + replace(): Xoá toàn bộ Fragment có trong FragManager và gọi add() với Fragment là tham số được truyền vào trong replace
 ```kt
 class ExampleActivity : AppCompatActivity(R.layout.example_activity) {
     override fun onCreate(savedInstanceState: Bundle?) {
