@@ -16,6 +16,18 @@
 - Fragment encapsulate View và Logic, nên ta có thể bưng nó đi bất cứ đâu và tái sử dụng được. 
 => Áp dụng kiến trúc thiết kế "Hướng Fragment", ta có thể biến Activity trở thành một trạm trung chuyển dùng để điều hướng UI, là nơi trung gian để truyền dữ liệu, hiển thị fragment và goto Activity khác. 
 ### Fragment Lifecycle
+![](/doc-kotlin/res/0EVReuq.png)
+- onAttach() gọi khi Fragment liên kết với Activity.
+- onCreate() gọi khi khởi tạo Fragment này.
+- onCreateView() gọi khi Fragment đó bắt đầu thực hiện inflate.
+- onViewCreated() gọi sau onCreateView() và root của nó phải thoả mãn non-null. Đây là lúc chúng ta thiết lập các thao tác với View: findViewById(), thêm listener...
+- onActivityCreated() gọi khi Activity chứa fragment này hoàn thành việc onCreate()
+- onStart() gọi khi fragment đã sẵn sàng để hiển thị trên màn hình
+- onResume() - gọi để bắt đầu cho phép Fragment Interactive (thực tế thì đây là giai đoạn Android cung cấp tài nguyên nặng cho Fragment: ví dụ như định vị, sensors)
+- onPause() - gọi để thu hồi các tài nguyên nặng. Các thay dổi đối với Fragment lúc này đã được submit
+- onDestroyView() gọi khi View của fragment bị huỷ, nhưng fragment vẫn nằm trong FragManager.
+- onDestroy() gọi khi Fragment không còn được sử dụng nữa
+- onDetach() gọi khi Fragment không còn liên kết với Activity.
 ### Sử dụng Fragment
 0. Cách ít sử dụng: Nhúng cứng một fragment vào Activty: tương tự như `<include>`: dùng `<fragment>`
 1. Thêm dependencies (có vẻ không cần thiết ở các bản Android mới hơn) :
@@ -80,7 +92,116 @@ class ExampleActivity : AppCompatActivity(R.layout.example_activity) {
 }
 ```
 ### Pass data giữa các Fragment
-https://developer.android.com/guide/fragments/communicate#fragment-result
+* https://developer.android.com/guide/fragments/communicate#fragment-result
+* https://guides.codepath.com/android/creating-and-using-fragments#communicating-with-fragments:~:text=return%20null.-,Communicating%20with%20Fragments,-Fragments%20should%20generally
+- Đầu tiên, các Fragment khuyến khích chỉ nên giao tiếp với Activity chứa nó. Tức ở đây, activity đóng vai trò chung chuyển, điều phối các fragment, điều phối dữ liệu ra, vào.
+- Có 3 cách để giao tiếp giữa 1 frag và 1 activity:
+1. Bundle: Activity khởi tạo fragment + argument đi kèm với nó\
+
+- Cài đặt:
+```kt
+companion object {
+
+    @JvmStatic
+    fun newInstance(isMyBoolean: Boolean) = MyFragment().apply {
+        arguments = Bundle().apply {
+            putBoolean("REPLACE WITH A STRING CONSTANT", isMyBoolean)
+        }
+    }
+}
+```
+- Khởi tạo Fragment:
+```kt
+val fragment = MyFragment.newInstance(false)
+... // transaction stuff happening here
+```
+
+- Lấy ra argument:
+```kt
+private var isMyBoolean = false
+
+override fun onAttach(context: Context?) {
+    super.onAttach(context)
+    arguments?.getBoolean("REPLACE WITH A STRING CONSTANT")?.let {
+        isMyBoolean = it
+    }
+}
+```
+2. Methods: Activity có thể gọi một method của nó bên trong fragment
+- Gọi Activity trên Fragment:
+```kt
+((YourActivityClassName)getActivity()).yourPublicMethod();
+```
+- Gọi Fragment trên Activity:
+```kt
+FragmentManager fm = getSupportFragmentManager();
+
+//if you added fragment via layout xml
+YourFragmentClass fragment = (YourFragmentClass)fm.findFragmentById(R.id.your_fragment_id);
+fragment.yourPublicMethod();
+```
+3. Listener: Activity và Fragment thêm vào các Listener event thông qua Interface
+```java
+public class MyListFragment extends Fragment {
+  // ...
+  // Define the listener of the interface type
+  // listener will the activity instance containing fragment
+  private OnItemSelectedListener listener;
+  
+  // Define the events that the fragment will use to communicate
+  public interface OnItemSelectedListener {
+    // This can be any number of events to be sent to the activity
+    public void onRssItemSelected(String link);
+  }
+  
+  // Store the listener (activity) that will have events fired once the fragment is attached
+  @Override
+  public void onAttach(Context context) {
+      super.onAttach(context);
+      if (context instanceof OnItemSelectedListener) {
+        listener = (OnItemSelectedListener) context;
+      } else {
+        throw new ClassCastException(context.toString()
+            + " must implement MyListFragment.OnItemSelectedListener");
+      }
+  }
+ 
+  // Now we can fire the event when the user selects something in the fragment
+  public void onSomeClick(View v) {
+     listener.onRssItemSelected("some link");
+  }
+}
+```
+
+```java
+import androidx.appcompat.app.AppCompatActivity;
+
+// Activity implements the fragment listener to handle events
+public class RssfeedActivity extends AppCompatActivity implements MyListFragment.OnItemSelectedListener {
+    // Can be any fragment, `DetailFragment` is just an example
+    DetailFragment fragment;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_rssfeed);
+        // Get access to the detail view fragment by id
+        fragment = (DetailFragment) getSupportFragmentManager()
+            .findFragmentById(R.id.detailFragment);
+  }
+  
+  // Now we can define the action to take in the activity when the fragment event fires
+  // This is implementing the `OnItemSelectedListener` interface methods
+  @Override
+  public void onRssItemSelected(String link) {
+      if (fragment != null && fragment.isInLayout()) {
+          fragment.setText(link);
+      }
+  }
+}
+```
+- Ngoài ra, chúng ta còn 2 cách mới: Sử dụng FragmentManager hoặc ViewModel
+### Fragment Manager
 - Kể từ fragment v1.3 trở lên, `FragmentManager` sẽ implement `FragmentResultOwner`, giúp thuận tiện cho việc pass data từ frag này sang frag kia
 - Giả sử A -> B, B là người đưa ra result, rồi quay lại A sẽ sử dụng result đó: 
     + A sẽ cần implement
@@ -95,9 +216,7 @@ https://developer.android.com/guide/fragments/communicate#fragment-result
         ```
 - Ngược lại ta cũng có thể chuyển dữ liệu từ A sang B bằng cách tương tự
 ![](/doc-kotlin/res/fragment-a-to-b.png)
-
-### Pass data giữa Fragment và Activity
-- Lần này chúng ta sẽ áp dụng `setFragmentResultListener` lên trên `FragmentManager` nằm ở Activity.
+- Khi cần chuyển từ Activity sang Fragment và ngược lại, lần này chúng ta sẽ áp dụng `setFragmentResultListener` lên trên `FragmentManager` nằm ở Activity.
 ```kt
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
