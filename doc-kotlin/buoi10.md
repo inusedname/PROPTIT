@@ -167,9 +167,13 @@ if (!navController.popBackStack()) {
     ```
     + Với popUpTo chúng ta đã tiến hành xoá B và C, đồng thời còn xoá luôn cả A
     + Nếu ở đây chúng ta không `popUpToInclusive="true"`, sẽ tồn tại tới 2 instance A trong BackStack.
-### Bottom Navigation
-- Là cái thanh điều hướng giữa các tab khác nhau: ví dụ như của Zalo, của Messenger
-- Bước 1: Thêm dependency (do đang sử dụng MaterialComponent)
+## Bottom Navigation
+### Định nghĩa
+- Là thanh điều hướng giữa các tab khác nhau, nằm ở phía dưới màn hình: ví dụ như của Zalo, của Messenger
+![](/doc-kotlin/res/bot_nav_animation.gif)
+
+### Cách sử dụng
+#### B1: Thêm dependency
 ```groovy
 // build.gradle (app)
 dependencies {
@@ -178,16 +182,24 @@ dependencies {
     // ...
 }
 ```
-- Bước 2: Thêm BotNavView vào Activity layout
+#### B2: Thêm BotNavView vào layout
 ```xml
 <!-- res/layout/activity_main.xml -->
+<androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment_container"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/bottom_navigation"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:menu="@menu/bottom_navigation_menu" />
 ```
-- Bước 3: Vẽ menu cho BotNavView:
+#### B3: Vẽ menu cho BotNavView
 ```xml
 <!-- res/menu/bottom_navigation_menu.xml -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
@@ -203,9 +215,10 @@ dependencies {
       android:title="@string/text_label_2"/>
 </menu>
 ```
-- Bước 4: Viết logic cho BotNavView:
+__CHÚ Ý: SỬ DỤNG BOTTOM_NAV ĐỂ ĐIỀU HƯỚNG NHIỀU FRAGMENT TRONG MỘT ACTIVITY, CẦN ĐỂ `android:id` CỦA MENU/ITEM TRÙNG VỚI `android:id` CỦA FRAGMENT BÊN TRONG NAV GRAPH__
+#### B4.1: Sử dụng onItemSelected (trường hợp đơn giản, không cần kết nối với một NavController)
 ```kt
-BottomNavigationView.OnNavigationItemSelectedListener { item ->
+BottomNavigationView.setOnNavigationItemSelectedListener { item ->
     when(item.itemId) {
         R.id.item1 -> {
             // Respond to navigation item 1 click
@@ -220,23 +233,146 @@ BottomNavigationView.OnNavigationItemSelectedListener { item ->
 }
 ```
 Ngoài ra khi reselect: có `setOnNavigationItemReselectedListener`
-- Bước 4+: Chỉnh màu cho BotNav
-```xml
-<style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
-</style>
+#### B4.2: Kết nối với NavController (trường hợp tổng quát)
+```kt
+// MainActivity.kt
+private fun setUpBottomNav() {
 
-<style name="ThemeOverlay.App.BottomNavigationView" parent="">
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorOnPrimary">@color/shrine_pink_900</item>
-</style>
+    /** 
+    *   Trong MainActivity, có 2 thành phần là BottomNav và một cái container.
+    *   Đầu tiên là lấy ra navController của container kia bằng cú pháp dưới:
+    */
+    navController =
+        binding.navHostFragmentContainer.getFragment<NavHostFragment>().navController
+    
+    // Sau đó setupWithNavController(controller) trên BotNav
+    binding.bottomNavigation.setupWithNavController(navController)
+
+    // BONUS: Đây là hàm xử lý cho phép chúng ta ẩn đi thanh BotNav trong 1 số trường hợp cụ thể
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        if (destination.id == R.id.editUserFragment) {
+            binding.bottomNavigation.visibility = View.GONE
+        } else {
+            binding.bottomNavigation.visibility = View.VISIBLE
+        }
+    }
+}
+
+// Ta có thể đặt title cho AppBar bằng label được cung cấp bên trong file Nav Graph thông qua cách sau
+private fun setUpAppBar() {
+    setupActionBarWithNavController(
+        navController,
+        // thêm một ý nhỏ là khi chuyển sang Item mới, sẽ xuất hiện một nút Back đầu thanh AppBar, để loại bỏ nó ta sẽ thêm vào một AppBarConfig:
+        AppBarConfiguration(
+            setOf(
+                R.id.homeFragment,
+                R.id.playFragment,
+                R.id.settingFragment,
+                R.id.editUserFragment
+            )
+        )
+    )
+}
 ```
-```xml
-<com.google.android.material.bottomnavigation.BottomNavigationView
-    ...
-    style="@style/Widget.App.BottomNavigationView"
-/>
-```
+#### BONUS: Chỉnh màu cho BotNav
+[Link](https://material.io/components/bottom-navigation/android#theming-a-bottom-navigation-bar)
+
 ## TabLayout
+### Định nghĩa
+- Là một UI Component giúp chia một Layout ra làm nhiều Tab. Ví dụ như là Facebook có một số Tab như News Feed, Friends, Noti...
+![](/doc-kotlin/res/TabLayout-in-Android.gif)
+### Tại sao sử dụng TabLayout
+- Cho phép ta thêm một Tab programmatically, tức là không cần phải fixed cứng là cái TabLayout này có bao nhiêu Tab Con bên trong
+- Kết hợp với một `ViewPager2`: Một cái container cung cấp animation chuyển Tab rất smooth.
 
-## ViewPager
+### Cách sử dụng, kết hợp với ViewPager2
+#### Cố định số TabItem (Fixed)
+- Bên trong TabLayout có thể bao gồm nhiều TabItem:
+```xml
+<!-- MainActivity.xml -->
+ <com.google.android.material.tabs.TabLayout
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent">
+
+     <com.google.android.material.tabs.TabItem
+             android:text="@string/tab_text"/>
+
+     <com.google.android.material.tabs.TabItem
+             android:icon="@drawable/ic_android"/>
+
+ </com.google.android.material.tabs.TabLayout>
+```
+#### Không cố định (Non-fixed)
+#### B1: Thêm TabLayout và ViewPager2 vào file layout
+```xml
+<!-- fragment_play.xml -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
+```
+#### B2: Viết Adapter quản lý TabLayout này
+```kt
+// PlayFragment.kt
+class PlayFragmentAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+        override fun getItemCount(): Int = 2
+
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> FavoriteFragment()
+                1 -> ...
+                2 -> ...
+                else -> MyMusicFragment()
+            }
+        }
+    }
+```
+#### B3: Liên kết Adapter với ViewPager, liên kết TabLayout với ViewPager
+```kt
+// PlayFragment.kt
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        linkViewPagerWithTabLayout()
+    }
+
+    private fun linkViewPagerWithTabLayout() {
+        binding.viewPager.adapter = PlayFragmentAdapter(this)
+
+        // Sử dụng TabLayoutMediator để kết nối 2 thằng với nhau
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Favourite"
+                else -> tab.text = "My Music"
+            }
+        }.attach()
+    }
+}
+```
+### Chú ý:
+- Số lượng TabItem chỉ nên từ 3 - 5 tab
+## ViewPager2
+### Định nghĩa:
+- Là một ViewGroup giúp chúng ta kéo qua kéo lại giữa các page. Nó sử dụng một RecycleView.Adapter để xử lý tab hiện lên màn hình.
+![](/doc-kotlin/res/030d43f6-ed6c-4f49-a2f4-abd86f015da1.gif)
+### Tại sao sử dụng ViewPager2
+Điểm mạnh của nó so với phiên bản 1:
+- Hỗ trợ bố cục right to left (RTL)
+- Hỗ trợ bố trí theo chiều dọc (cuộn theo chiều dọc)
+- Sự kiện PageChangeListener tốt hơn
+- Đổi từ `PageAdapter` sang `RecyclerView.Adapter`
+- Đổi từ `FragmentStateFragmentAdapter` sang `FragmentStateAdapter`
+- Đổi từ `registerOnPageChangeCallback` sang `addPageChangeListener`
+### Cách sử dụng cùng với TabLayout:
+Xem [Cách sử dụng TabLayout kết hợp với ViewPager2](#cách-sử-dụng-kết-hợp-với-viewpager2)
