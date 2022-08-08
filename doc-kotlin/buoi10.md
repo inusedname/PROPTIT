@@ -122,9 +122,9 @@ dependencies {
 ## [Điều hướng bằng Navigation Component](https://developer.android.com/guide/navigation/navigation-navigate)
 - Trước hết thì chúng ta phải get instance NavController bằng 1 trong 3 cách sau:
 ```kt
-Fragment.findNavController()
-View.findNavController()
-Activity.findNavController(viewId: Int)
+Fragment.findNavController() // Gọi trên một Fragment, fragment này phải là NavHostFrag hoặc bên trong NavHostFrag
+View.findNavController()    // Gọi trên một View, view này phải là NavHost hoặc bên trong NavHost
+Activity.findNavController(viewId: Int) // Gọi khi controller nằm trên View này
 ```
 - SafeArgs: tạm thời bỏ qua, sẽ nhắc đến sau.
 - DeepLinkRequest sử dụng Navigation: cũng tạm thời bỏ qua
