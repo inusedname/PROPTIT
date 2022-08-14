@@ -191,3 +191,36 @@ fun requestPermission() {
     }
 }
 ```
+### Permissions changelog by API
+1. From [Android 6.0](https://developer.android.com/about/versions/marshmallow/android-6.0-changes#behavior-runtime-permissions)
+    + New: Runtime Permissions
+    + Hardware Identifier
+        + To get nearby external device's hardware identifier, must have `ACCESS_FINE_LOCATION` or `ACCESS_COARSE_LOCATION`
+2. From [Android 7.0](https://developer.android.com/about/versions/nougat/android-7.0-changes#perm)
+    + Private files has restricted access to avoid leakage of metadata (size, date...)
+3. From [Android 8.0](https://developer.android.com/about/versions/oreo/android-8.0-changes#rmp)
+    + Before 8.0: In Manifest, if there are >= 2 permissions declared and they are in the same Permission group, when one of them is granted, System will incorrectly grant the rest permission.
+    + For example, suppose an app lists both `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` in its manifest. The app requests `READ_EXTERNAL_STORAGE` and the user grants it. If the app targets API level 25 or lower, the system also grants `WRITE_EXTERNAL_STORAGE` at the same time, because it belongs to the same STORAGE permission group and is also registered in the manifest.
+
+4. From [Android 9.0](https://developer.android.com/about/versions/pie/android-9.0-changes-all#privacy-changes-all)
+    - Limited access to sensors in background: 
+        + Camera: No access
+        + Continuous Report Sensor (accelerometers, gyroscope): Don't receive events
+        + On-change Report Sensor: Don't receive events
+        + To receive events, use foreground service.
+    - New: `CALL_LOG` permission group, previously located in `PHONE` permission group.
+    - Reading `phone numbers` or `phone state` take more steps.
+    - Performing Wifi scans, getting connect info require more steps
+
+5. From [Android 10](https://developer.android.com/about/versions/10/privacy/changes#top-changes)
+    - App now can access scoped storage (app-specific dir) without needing to request any storage-related permissions
+    - To access to files outside app-specific dir, use [MANAGE_EXTERNAL_STORAGE](https://developer.android.com/training/data-storage/manage-all-files) permission.
+    - Access to device location background requires permission `ACCESS_BACKGROUND_LOCATION`
+6. From [Android 11](https://developer.android.com/about/versions/11/privacy)
+    - Scoped storage enforcement: Apps that target Android 11 or higher are always subject to scoped storage behaviors: 
+        + Starting in Android 11, apps cannot create their own app-specific directory on external storage. To access the directory that the system provides for your app, call getExternalFilesDirs()
+    - One-time permissions
+    - Permissions auto-reset
+    - Background location access
+    - [Foreground services](https://developer.android.com/about/versions/11/privacy/foreground-services):
+        If your app targets Android 11 or higher and accesses the camera or microphone in a foreground service, you must include the camera and microphone foreground service types.
