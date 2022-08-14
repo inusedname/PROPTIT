@@ -170,7 +170,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 - Two ways:
     + Quicker one: [ShimmerRecyclerView](https://github.com/sharish/ShimmerRecyclerView)
     + More custom: [Shimmer by Facebook](https://facebook.github.io/shimmer-android/)
--  Create a dummy ShimmerView lies in the same layout with the real RecyclerView. While the data is fetching, ShimmerView is running, and it will be set to View.HIDE when things done.
+-  Create a dummy ShimmerView lies in the same layout with the real RecyclerView. While the data is fetching, ShimmerView is running, and it will be set to View.GONE when things done.
 
 ## Load more/endless scrolling
 - Brief:
