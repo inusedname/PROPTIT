@@ -7,7 +7,7 @@ Permission: Khái niệm về permission, cách kiểm tra ứng dụng của m�
 Chuẩn bị bài tập:\
 Service: Tạo 1 service cung cấp location và hiển thị lên màn hình.\
 Brocast Receiver: Tạo 1 broacast receiver nhận trạng thái của pin và show lên màn hình.\
-Permission: Áp dụng permission để xin quyền cấp vị trí hiện tại.\
+Permission: Áp dụng permission để xin quyền cấp vị trí hiện tại.
 
 # Service
 ## What is service ?
@@ -19,11 +19,14 @@ Permission: Áp dụng permission để xin quyền cấp vị trí hiện tại
 ### Types of services
 - __Started service__: The service is unbounded to any other components, just itself. 
     + __Foreground__ (example: Music App)
-    Users want to hear it (Music Playback) as long as they done the job. No interceptions should occurs during the experience.
+    Users want to hear it (Music Playback) as long as they done the job. No interceptions should occurs during the experience. 
+    + Foreground always has a notification in noti bar since Android 8, however background doesn't have because it has more freedom, easyly to be destroyed.
     + __Background__ (example: Syncing data)
     User doesn't care much about the job, so system has more freedom in managing service. Service can be killed, and then be restarted later.
 - __Bound service__: There are other components wants to interact with the service, send request, receive result... The service provides an API to another process. 
-
+- __Priority__: Bound > Foreground > Background
+- __Background__: Does not need Activity to lay on. It can run by itself.
+- __Bound & Foreground__: Must kill both bound and foreground to kill the service.
 ### Lifecycle
 ![](/doc-kotlin/res/1b404092-6a5e-4525-8ae6-7932f4336e45.jpg)
 ### Note:
